@@ -1,8 +1,11 @@
 package kz.abudinislam.retrofitjas
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Result(
     val adult: Boolean,
     @SerializedName("backdrop_path")
@@ -26,4 +29,4 @@ data class Result(
     val voteAverage: Double,
     @SerializedName("vote_count")
     val voteCount: Int
-)
+): Parcelable

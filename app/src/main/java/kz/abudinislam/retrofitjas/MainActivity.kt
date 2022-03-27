@@ -18,26 +18,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        getPosts()
+
     }
-
-    private fun getPosts() {
-        RetrofitService.getPostApi().getMoviesList().enqueue(object : Callback<Movie> {
-            override fun onFailure(call: Call<Movie>, t: Throwable) {
-                println("ERROR")
-            }
-
-            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
-                Log.d("My_post_list", response.body().toString())
-                if (response.isSuccessful) {
-                    val list = response.body()
-                    list?.results?.let {
-                        val adapter = MoviesAdapter(list = it)
-                        binding.rvMovies.adapter = adapter
-                    }
-                }
-            }
-        })
-    }
-
 }

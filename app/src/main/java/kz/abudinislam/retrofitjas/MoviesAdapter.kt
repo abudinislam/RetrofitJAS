@@ -10,6 +10,8 @@ class MoviesAdapter(list: List<Result>) : RecyclerView.Adapter<MoviesAdapter.Mov
     class MovieViewHolder(val binding: ItemMoviesBinding) : RecyclerView.ViewHolder(binding.root)
 
     var listMovies = list
+    var onMovieClickListener: OnMovieClickListener? = null
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
@@ -24,7 +26,12 @@ class MoviesAdapter(list: List<Result>) : RecyclerView.Adapter<MoviesAdapter.Mov
 
         with(holder.binding) {
             tvMovieName.text = listMovies[position].title
-            Picasso.get().load(IMAGE_URL+listMovies[position].posterPath).into(ivMovie)
+            Picasso.get().load(IMAGE_URL + listMovies[position].posterPath).into(ivMovie)
+
+            root.setOnClickListener {
+                onMovieClickListener?.onMovieClick(listMovies[position])
+                true
+            }
         }
 
 
@@ -33,8 +40,13 @@ class MoviesAdapter(list: List<Result>) : RecyclerView.Adapter<MoviesAdapter.Mov
     override fun getItemCount(): Int {
         return listMovies.size
     }
- companion object{
-     private const val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
- }
+
+    companion object {
+        private const val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
+    }
+
+    interface OnMovieClickListener {
+        fun onMovieClick(result: Result)
+    }
 
 }
