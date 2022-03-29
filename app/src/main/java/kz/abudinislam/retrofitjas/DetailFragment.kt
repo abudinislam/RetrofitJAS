@@ -33,7 +33,7 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
    Picasso.get().load(IMAGE_URL + result.posterPath).into(binding.ivDetailIcon)
-    binding.tvDetailDesc.text = result.title
+    binding.tvDetailDesc.text = result.overview
     }
 
     private fun parceArgs() {
