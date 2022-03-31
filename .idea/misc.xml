@@ -3,10 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/drawable/ic_home.xml" value="0.124" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/fragment_detail.xml" value="0.2" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/fragment_favorites.xml" value="0.1125" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/fragment_favourite.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/fragment_movies.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/hgf.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/layout/item_movies.xml" value="0.1" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/menu/bottom_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Din/RetrofitJAS/app/src/main/res/menu/nav_graph.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

@@ -49,7 +49,7 @@ class MoviesFragment : Fragment() {
                         binding.rvMovies.adapter = adapter
                         adapter.onMovieClickListener = object : MoviesAdapter.OnMovieClickListener {
                             override fun onMovieClick(result: Result) {
-                                detailFragment(result)
+//                                detailFragment(result)
 
                             }
                         }
@@ -58,13 +58,13 @@ class MoviesFragment : Fragment() {
             }
         })
     }
-
-    private fun detailFragment(result: Result) {
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.activity_main, DetailFragment.newInstance(result))
-            .addToBackStack(null)
-            .commit()
-    }
+//
+//    private fun detailFragment(result: Result) {
+//        requireActivity().supportFragmentManager
+//            .beginTransaction()
+//            .replace(R.id.activity_main, DetailFragment.newInstance(result))
+//            .addToBackStack(null)
+//            .commit()
+//    }
 
 }
