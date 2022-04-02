@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import kz.abudinislam.retrofitjas.databinding.FragmentMoviesBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -49,22 +50,15 @@ class MoviesFragment : Fragment() {
                         binding.rvMovies.adapter = adapter
                         adapter.onMovieClickListener = object : MoviesAdapter.OnMovieClickListener {
                             override fun onMovieClick(result: Result) {
-                               detailFragment(result)
-
+  //                             detailFragment(result)
+                                val action = MoviesFragmentDirections.actionMoviesFragmentToDetailFragment(result)
+                                findNavController().navigate(action)
                             }
                         }
                     }
                 }
             }
         })
-    }
-
-    private fun detailFragment(result: Result) {
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.activity_main, DetailFragment.newInstance(result))
-            .addToBackStack(null)
-            .commit()
     }
 
 }
