@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_activity"
-    app:startDestination="@navigation/movies">
+    app:startDestination="@id/navigation_movies">
 
     <include app:graph="@navigation/movies" />
     <include app:graph="@navigation/favorites" />
