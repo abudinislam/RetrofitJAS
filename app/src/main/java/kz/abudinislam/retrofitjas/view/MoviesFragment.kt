@@ -74,13 +74,11 @@ class MoviesFragment : Fragment(),CoroutineScope {
         is MoviesViewModel.State.ShowLoading ->binding.progressBar.visibility = View.VISIBLE
         is MoviesViewModel.State.HideLoading ->binding.progressBar.visibility = View.GONE
         is MoviesViewModel.State.Finish ->viewModel.movies.observe(viewLifecycleOwner){
+            adapter.submitList(it)
+            binding.rvMovies.adapter = adapter
 
         }
         }
         }
-
     }
-
-
-
 }
