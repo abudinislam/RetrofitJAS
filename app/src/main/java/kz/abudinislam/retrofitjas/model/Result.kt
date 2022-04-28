@@ -1,4 +1,4 @@
-package kz.abudinislam.retrofitjas
+package kz.abudinislam.retrofitjas.model
 
 
 import android.os.Parcelable

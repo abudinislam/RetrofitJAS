@@ -1,10 +1,11 @@
-package kz.abudinislam.retrofitjas
+package kz.abudinislam.retrofitjas.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kz.abudinislam.retrofitjas.R
 
 
 class FavoritesFragment : Fragment() {

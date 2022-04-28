@@ -1,4 +1,4 @@
-package kz.abudinislam.retrofitjas
+package kz.abudinislam.retrofitjas.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Picasso
 import kz.abudinislam.retrofitjas.databinding.FragmentDetailBinding
-import java.lang.RuntimeException
+import kz.abudinislam.retrofitjas.model.Result
 
 
 class DetailFragment : Fragment() {

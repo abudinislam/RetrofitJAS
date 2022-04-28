@@ -1,9 +1,10 @@
-package kz.abudinislam.retrofitjas
+package kz.abudinislam.retrofitjas.model
 
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kz.abudinislam.retrofitjas.model.Result
 
 @Parcelize
 data class Movie(

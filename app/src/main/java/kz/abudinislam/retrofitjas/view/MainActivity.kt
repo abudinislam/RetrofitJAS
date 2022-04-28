@@ -1,15 +1,13 @@
-package kz.abudinislam.retrofitjas
+package kz.abudinislam.retrofitjas.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationBarView
+import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.ActivityMainBinding
-import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
