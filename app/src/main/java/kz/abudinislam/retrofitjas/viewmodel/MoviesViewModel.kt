@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
 import kz.abudinislam.retrofitjas.view.MoviesAdapter
 import kotlin.coroutines.CoroutineContext
 import kz.abudinislam.retrofitjas.model.Result
+import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
 
 class MoviesViewModel:ViewModel(),CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.Main

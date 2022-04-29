@@ -8,12 +8,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.model.LoginApprove
+import kz.abudinislam.retrofitjas.model.Token
 import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
-import java.lang.annotation.RetentionPolicy
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel:ViewModel(), CoroutineScope {
-    override val coroutineContext: CoroutineContext =Dispatchers.Main
+    override val coroutineContext: CoroutineContext = Dispatchers.Main
 
     private val _loadingState =MutableLiveData<LoadingState>()
     val loadingState:LiveData<LoadingState>
@@ -36,6 +36,19 @@ class LoginViewModel:ViewModel(), CoroutineScope {
             request_token = responseGet.body()?.request_token as String
         )
 
+            val responseApprove = RetrofitInstance.getPostApi().approveToken(loginApprove = loginApprove)
+            if (responseApprove.isSuccessful){
+                val session =
+                    RetrofitInstance.getPostApi().createSession(token = responseApprove.body() as Token)
+                if (session.isSuccessful){
+                    _sessionId.value = session.body()?.session_id
+                    _loadingState.value = LoadingState.HideLoading
+                    _loadingState.value = LoadingState.Finish
+                }
+            } else {
+                _loadingState.value = LoadingState.HideLoading
+            }
+
         }
     }
     }
@@ -47,5 +60,4 @@ class LoginViewModel:ViewModel(), CoroutineScope {
         object HideLoading :  LoadingState()
         object Finish :  LoadingState()
     }
-
 }

@@ -21,6 +21,11 @@
         tools:layout="@layout/fragment_detail" >
         <argument
             android:name="result"
-            app:argType="kz.abudinislam.retrofitjas.Result" />
+            app:argType="kz.abudinislam.retrofitjas.model.Result" />
     </fragment>
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="kz.abudinislam.retrofitjas.view.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
 </navigation>

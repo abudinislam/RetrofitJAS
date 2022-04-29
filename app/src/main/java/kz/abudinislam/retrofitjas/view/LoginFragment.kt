@@ -12,15 +12,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.movieforchill.R
-import com.example.movieforchill.databinding.FragmentLoginBinding
-import com.example.movieforchill.model.LoginApprove
-import com.example.movieforchill.model.Token
-import com.example.movieforchill.model.retrofit.api.RetrofitInstance
-import com.example.movieforchill.viewmodel.login.LoginViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.FragmentLoginBinding
 import kz.abudinislam.retrofitjas.model.LoginApprove
 import kz.abudinislam.retrofitjas.viewmodel.LoginViewModel
@@ -97,7 +91,7 @@ class LoginFragment : Fragment(), CoroutineScope {
                         sessionId = it
                         putDataIntoPref(sessionId)
                         try {
-                            findNavController().navigate(R.id.action_loginFragment_to_navigation_first_fragment)
+                            findNavController().navigate(R.id.action_loginFragment_to_navigation_movies)
                         } catch (e: Exception) {
                         }
                     }

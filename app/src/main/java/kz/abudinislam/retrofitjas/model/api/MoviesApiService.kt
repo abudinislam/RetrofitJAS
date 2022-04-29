@@ -1,10 +1,9 @@
 package kz.abudinislam.retrofitjas.model.api
 
-import com.example.movieforchill.model.*
 import kz.abudinislam.retrofitjas.model.*
 import retrofit2.Response
 import retrofit2.http.*
-import kotlin.Result
+import kz.abudinislam.retrofitjas.model.Result
 
 interface MoviesApi { // интерфейс для создания гет запроса
     @GET("movie/popular")

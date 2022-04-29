@@ -13,13 +13,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.databinding.FragmentMoviesBinding
-import kz.abudinislam.retrofitjas.model.Movie
 import kz.abudinislam.retrofitjas.model.Result
-import kz.abudinislam.retrofitjas.model.RetrofitService
 import kz.abudinislam.retrofitjas.viewmodel.MoviesViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import kotlin.coroutines.CoroutineContext
 
 
@@ -45,11 +40,6 @@ class MoviesFragment : Fragment(),CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
 
         getClick()
-
-
-//        getPosts()
-
-
     }
 
     private fun getClick(){
@@ -66,9 +56,7 @@ class MoviesFragment : Fragment(),CoroutineScope {
     }
 
     private fun initAndObserveViewModel(){
-
         viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
-
         viewModel.loadingState.observe(viewLifecycleOwner){
         when(it){
         is MoviesViewModel.State.ShowLoading ->binding.progressBar.visibility = View.VISIBLE
