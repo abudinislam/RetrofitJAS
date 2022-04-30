@@ -90,9 +90,9 @@ class LoginFragment : Fragment(), CoroutineScope {
                     viewModel.sessionId.observe(viewLifecycleOwner) {
                         sessionId = it
                         putDataIntoPref(sessionId)
-                        try {
+                        try{
                             findNavController().navigate(R.id.action_loginFragment_to_navigation_movies)
-                        } catch (e: Exception) {
+                            } catch  (e: Exception) {
                         }
                     }
                 }

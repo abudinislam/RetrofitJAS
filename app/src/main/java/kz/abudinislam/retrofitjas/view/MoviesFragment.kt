@@ -40,6 +40,7 @@ class MoviesFragment : Fragment(),CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
 
         getClick()
+        initAndObserveViewModel()
     }
 
     private fun getClick(){
