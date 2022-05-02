@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kz.abudinislam.retrofitjas.databinding.FragmentDetailBinding
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
+import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
 import kotlin.coroutines.CoroutineContext
 
 
@@ -44,7 +45,8 @@ class DetailFragment : Fragment(),CoroutineScope {
 
 
     private fun initViewModel(){
-        viewModel = ViewModelProvider(this)[DetailViewModel::class.java]
+        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity())
+        viewModel = ViewModelProvider(this, viewModelProviderFactory)[DetailViewModel::class.java]
     }
 
     private fun getMovieDetails(){

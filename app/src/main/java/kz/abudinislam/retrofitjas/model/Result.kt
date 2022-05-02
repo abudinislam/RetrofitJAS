@@ -2,17 +2,22 @@ package kz.abudinislam.retrofitjas.model
 
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+@Entity(tableName = "movie_table")
+
 @Parcelize
 data class Result(
+    @PrimaryKey(autoGenerate = false)
+    val id: Int,
     val adult: Boolean,
     @SerializedName("backdrop_path")
     val backdropPath: String,
     @SerializedName("genre_ids")
     val genreIds: List<Int>,
-    val id: Int,
     @SerializedName("original_language")
     val originalLanguage: String,
     @SerializedName("original_title")

@@ -1,18 +1,24 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kz.abudinislam.retrofitjas.view.MoviesAdapter
 import kotlin.coroutines.CoroutineContext
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
+import kz.abudinislam.retrofitjas.model.repository.MovieDatabase
+import kz.abudinislam.retrofitjas.model.room.dao.MovieDao
+import java.lang.Exception
 
-class MoviesViewModel:ViewModel(),CoroutineScope {
+class MoviesViewModel( private val context: Context):ViewModel(),CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.Main
+    private val movieDao: MovieDao
 
 
     private val _loadingState = MutableLiveData<State>()
@@ -29,19 +35,37 @@ class MoviesViewModel:ViewModel(),CoroutineScope {
 
     init {
         getPosts()
+        movieDao = MovieDatabase.getDatabase(context).movieDao()
     }
 
 
     private fun getPosts() {
         launch {
             _loadingState.value = State.ShowLoading
-            val response = RetrofitInstance.getPostApi().getMoviesList()
-            if (response.isSuccessful){
-                _movies.value = response.body()?.results
+            val list = withContext(Dispatchers.IO) {
+                try {
+                    val response = RetrofitInstance.getPostApi().getMoviesList()
+                    if (response.isSuccessful)
+                    {
+                        val result = response.body()?.results
+                        if (!result.isNullOrEmpty()) {
+                            movieDao.insertAll(result)
+                        }
+                        result
+                    } else {
+                        movieDao.getAll()
+
+                    }
+                } catch (e: Exception) {
+                    movieDao.getAll()
+                }
             }
+            _movies.value = list
+
             _loadingState.value = State.HideLoading
             _loadingState.value = State.Finish
         }
+
     }
 
     val recyclerViewItemClickListener = object : MoviesAdapter.OnMovieClickListener {

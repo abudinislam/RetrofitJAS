@@ -1,17 +1,22 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
+import kz.abudinislam.retrofitjas.model.repository.MovieDatabase
+import kz.abudinislam.retrofitjas.model.room.dao.MovieDao
 
-class DetailViewModel:ViewModel(),CoroutineScope {
+class DetailViewModel( private val context: Context):ViewModel(),CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.Main
+    private val movieDao: MovieDao
 
     private val _liveDataDetail = MutableLiveData<Result>()
     val liveDataDetail:LiveData<Result>
@@ -21,14 +26,22 @@ class DetailViewModel:ViewModel(),CoroutineScope {
     val loadingState:LiveData<StateDetail>
     get() = _loadingState
 
+    init {
+        movieDao = MovieDatabase.getDatabase(context).movieDao()
+    }
 
-    fun getMovieDetails(movieid:Int) {
+
+    fun getMovieDetails(movieId: Int) {
         launch {
             _loadingState.value = StateDetail.ShowLoading
-            var responseMovie = RetrofitInstance.getPostApi().getMovieDetail(id = movieid)
-            if (responseMovie.isSuccessful) {
-                _liveDataDetail.value = responseMovie.body()
+            val list = withContext(Dispatchers.IO) {
+                var result = movieDao.getMovieById(movieId)
+                result
             }
+
+            _liveDataDetail.value = list
+
+
             _loadingState.value = StateDetail.HideLoading
             _loadingState.value = StateDetail.Finish
         }
