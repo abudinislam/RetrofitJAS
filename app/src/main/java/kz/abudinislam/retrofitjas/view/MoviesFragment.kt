@@ -39,9 +39,11 @@ class MoviesFragment : Fragment(),CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getClick()
+
         initAndObserveViewModel()
 
-        getClick()
+
 
     }
 
