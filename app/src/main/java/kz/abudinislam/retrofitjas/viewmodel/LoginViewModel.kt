@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.model.LoginApprove
 import kz.abudinislam.retrofitjas.model.Token
-import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
+import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel:ViewModel(), CoroutineScope {
@@ -27,7 +27,7 @@ class LoginViewModel:ViewModel(), CoroutineScope {
 
     viewModelScope.launch {
     _loadingState.value = LoadingState.ShowLoading
-        val responseGet = RetrofitInstance.getPostApi().getToken()
+        val responseGet = RetrofitService.getPostApi().getToken()
         if (responseGet.isSuccessful){
         val loginApprove = LoginApprove(
 
@@ -36,10 +36,10 @@ class LoginViewModel:ViewModel(), CoroutineScope {
             request_token = responseGet.body()?.request_token as String
         )
 
-            val responseApprove = RetrofitInstance.getPostApi().approveToken(loginApprove = loginApprove)
+            val responseApprove = RetrofitService.getPostApi().approveToken(loginApprove = loginApprove)
             if (responseApprove.isSuccessful){
                 val session =
-                    RetrofitInstance.getPostApi().createSession(token = responseApprove.body() as Token)
+                    RetrofitService.getPostApi().createSession(token = responseApprove.body() as Token)
                 if (session.isSuccessful){
                     _sessionId.value = session.body()?.session_id
                     _loadingState.value = LoadingState.HideLoading

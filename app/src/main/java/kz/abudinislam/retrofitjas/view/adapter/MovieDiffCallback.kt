@@ -1,4 +1,4 @@
-package kz.abudinislam.retrofitjas.view
+package kz.abudinislam.retrofitjas.view.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import kz.abudinislam.retrofitjas.model.Result

@@ -1,14 +1,12 @@
-package kz.abudinislam.retrofitjas.view
+package kz.abudinislam.retrofitjas.view.adapter
 
-import android.os.Parcel
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kz.abudinislam.retrofitjas.databinding.ItemMoviesBinding
 import kz.abudinislam.retrofitjas.model.Result
+import kz.abudinislam.retrofitjas.view.MoviesViewHolder
 
 class MoviesAdapter: ListAdapter<Result, MoviesViewHolder>(MovieDiffCallback){
 

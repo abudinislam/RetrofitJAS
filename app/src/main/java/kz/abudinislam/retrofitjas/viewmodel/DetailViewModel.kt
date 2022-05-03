@@ -10,9 +10,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 import kz.abudinislam.retrofitjas.model.Result
-import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
-import kz.abudinislam.retrofitjas.model.repository.MovieDatabase
-import kz.abudinislam.retrofitjas.model.room.dao.MovieDao
+import kz.abudinislam.retrofitjas.model.data.MovieDatabase
+import kz.abudinislam.retrofitjas.model.data.MovieDao
 
 class DetailViewModel( private val context: Context):ViewModel(),CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.Main

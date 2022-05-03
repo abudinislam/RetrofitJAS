@@ -65,7 +65,7 @@ interface MoviesApi { // интерфейс для создания гет за�
     companion object {
 
         private var SESSION_ID = ""
-        private var API_KEY = "2672c5e5006041431f2be6a17b6f7ceb"
+        private var API_KEY = "6c77f278ed018c5240be802d3a7dfc62"
         private var LANGUAGE = "ru"
         private var PAGE = 1
     }

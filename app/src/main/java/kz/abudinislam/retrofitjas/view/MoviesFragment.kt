@@ -1,12 +1,10 @@
 package kz.abudinislam.retrofitjas.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.databinding.FragmentMoviesBinding
 import kz.abudinislam.retrofitjas.model.Result
+import kz.abudinislam.retrofitjas.view.adapter.MoviesAdapter
 import kz.abudinislam.retrofitjas.viewmodel.MoviesViewModel
 import kotlin.coroutines.CoroutineContext
 

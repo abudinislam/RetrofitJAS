@@ -8,12 +8,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kz.abudinislam.retrofitjas.view.MoviesAdapter
+import kz.abudinislam.retrofitjas.view.adapter.MoviesAdapter
 import kotlin.coroutines.CoroutineContext
 import kz.abudinislam.retrofitjas.model.Result
-import kz.abudinislam.retrofitjas.model.api.RetrofitInstance
-import kz.abudinislam.retrofitjas.model.repository.MovieDatabase
-import kz.abudinislam.retrofitjas.model.room.dao.MovieDao
+import kz.abudinislam.retrofitjas.model.api.RetrofitService
+import kz.abudinislam.retrofitjas.model.data.MovieDatabase
+import kz.abudinislam.retrofitjas.model.data.MovieDao
 import java.lang.Exception
 
 class MoviesViewModel( private val context: Context):ViewModel(),CoroutineScope {
@@ -44,7 +44,7 @@ class MoviesViewModel( private val context: Context):ViewModel(),CoroutineScope 
             _loadingState.value = State.ShowLoading
             val list = withContext(Dispatchers.IO) {
                 try {
-                    val response = RetrofitInstance.getPostApi().getMoviesList()
+                    val response = RetrofitService.getPostApi().getMoviesList()
                     if (response.isSuccessful)
                     {
                         val result = response.body()?.results

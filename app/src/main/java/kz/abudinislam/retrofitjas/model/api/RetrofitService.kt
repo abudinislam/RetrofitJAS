@@ -3,7 +3,7 @@ package kz.abudinislam.retrofitjas.model.api
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object RetrofitInstance {
+object RetrofitService {
     private const val BASE_URL = "https://api.themoviedb.org/3/"
 
     fun getPostApi(): MoviesApi {
