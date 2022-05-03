@@ -14,6 +14,7 @@ import kz.abudinislam.retrofitjas.databinding.FragmentMoviesBinding
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.view.adapter.MoviesAdapter
 import kz.abudinislam.retrofitjas.viewmodel.MoviesViewModel
+import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
 import kotlin.coroutines.CoroutineContext
 
 
@@ -37,13 +38,8 @@ class MoviesFragment : Fragment(),CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        getClick()
-
         initAndObserveViewModel()
-
-
-
+        getClick()
     }
 
     private fun getClick(){
@@ -60,17 +56,20 @@ class MoviesFragment : Fragment(),CoroutineScope {
     }
 
     private fun initAndObserveViewModel(){
-        viewModel = ViewModelProvider(this)[MoviesViewModel::class.java]
-        viewModel.loadingState.observe(viewLifecycleOwner){
-        when(it){
-        is MoviesViewModel.State.ShowLoading ->binding.progressBar.visibility = View.VISIBLE
-        is MoviesViewModel.State.HideLoading ->binding.progressBar.visibility = View.GONE
-        is MoviesViewModel.State.Finish ->viewModel.movies.observe(viewLifecycleOwner){
-            adapter.submitList(it)
-            binding.rvMovies.adapter = adapter
+        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity())
+        viewModel = ViewModelProvider(this, viewModelProviderFactory)[MoviesViewModel::class.java]
 
+
+        viewModel.loadingState.observe(viewLifecycleOwner){
+            when(it){
+                is MoviesViewModel.State.ShowLoading -> binding.progressBar.visibility = View.VISIBLE
+                is MoviesViewModel.State.HideLoading -> binding.progressBar.visibility = View.GONE
+                is MoviesViewModel.State.Finish -> viewModel.movies.observe(viewLifecycleOwner){
+                    adapter.submitList(it)
+                    binding.rvMovies.adapter = adapter
+                }
+            }
         }
-        }
-        }
+
     }
 }
