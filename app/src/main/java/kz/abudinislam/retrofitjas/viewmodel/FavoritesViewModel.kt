@@ -1,5 +1,6 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,43 +9,36 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kz.abudinislam.retrofitjas.view.adapter.MoviesAdapter
-import kotlin.coroutines.CoroutineContext
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.model.api.RetrofitService
-import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.data.MovieDao
-import java.lang.Exception
+import kz.abudinislam.retrofitjas.model.data.MovieDatabase
+import kotlin.coroutines.CoroutineContext
 
-class MoviesViewModel(private val context: Context) : ViewModel(), CoroutineScope {
+class FavoritesViewModel(private val context: Context) : ViewModel(), CoroutineScope {
+
     override val coroutineContext: CoroutineContext = Dispatchers.Main
     private val movieDao: MovieDao
 
-
-    private val _loadingState = MutableLiveData<State>()
-    val loadingState: LiveData<State>
-        get() = _loadingState
 
     private val _movies = MutableLiveData<List<Result>>()
     val movies: LiveData<List<Result>>
         get() = _movies
 
-    private val _openDetail = MutableLiveData<Result>()
-    val openDetail: LiveData<Result>
-        get() = _openDetail
+    private val _loadingState = MutableLiveData<MoviesViewModel.State>()
+    val loadingState: LiveData<MoviesViewModel.State>
+        get() = _loadingState
 
     init {
-        getPosts()
         movieDao = MovieDatabase.getDatabase(context).movieDao()
     }
 
-
-    private fun getPosts() {
+    fun getPosts(session: String) {
         launch {
-            _loadingState.value = State.ShowLoading
+            _loadingState.value = MoviesViewModel.State.ShowLoading
             val list = withContext(Dispatchers.IO) {
                 try {
-                    val response = RetrofitService.getPostApi().getMoviesList()
+                    val response = RetrofitService.getPostApi().getFavorites(session_id = session)
                     if (response.isSuccessful) {
                         val result = response.body()?.results
                         if (!result.isNullOrEmpty()) {
@@ -53,7 +47,6 @@ class MoviesViewModel(private val context: Context) : ViewModel(), CoroutineScop
                         result
                     } else {
                         movieDao.getAll()
-
                     }
                 } catch (e: Exception) {
                     movieDao.getAll()
@@ -61,24 +54,9 @@ class MoviesViewModel(private val context: Context) : ViewModel(), CoroutineScop
             }
             _movies.value = list
 
-            _loadingState.value = State.HideLoading
-            _loadingState.value = State.Finish
-        }
-
-    }
-
-    val recyclerViewItemClickListener = object : MoviesAdapter.OnMovieClickListener {
-
-        override fun onMovieClick(result: Result) {
-            _openDetail.value = result
+            _loadingState.value = MoviesViewModel.State.HideLoading
+            _loadingState.value = MoviesViewModel.State.Finish
         }
     }
 
-
-    sealed class State {
-        object ShowLoading : State()
-        object HideLoading : State()
-        object Finish : State()
-
-    }
 }

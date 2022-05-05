@@ -12,6 +12,14 @@
         android:orientation="vertical"
         android:layout_margin="8dp">
 
+        <ImageButton
+            android:id="@+id/iv_fav_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:adjustViewBounds="true"
+            android:layout_gravity="right"
+            android:src="@drawable/favorite_border"/>
+
         <ImageView
             android:id="@+id/iv_detail_icon"
             android:layout_width="match_parent"

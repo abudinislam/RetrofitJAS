@@ -4,10 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_favourites"
     app:startDestination="@id/favoritesFragment">
-
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="kz.abudinislam.retrofitjas.view.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="kz.abudinislam.retrofitjas.view.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+
+    <argument
+        android:name="result"
+        app:argType="integer" />
+
+    </fragment>
 </navigation>

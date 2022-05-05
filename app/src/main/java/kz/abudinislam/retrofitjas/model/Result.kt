@@ -16,8 +16,6 @@ data class Result(
     val adult: Boolean,
     @SerializedName("backdrop_path")
     val backdropPath: String,
-//    @SerializedName("genre_ids")
-//    val genreIds: List<Int>,
     @SerializedName("original_language")
     val originalLanguage: String,
     @SerializedName("original_title")
@@ -33,5 +31,7 @@ data class Result(
     @SerializedName("vote_average")
     val voteAverage: Double,
     @SerializedName("vote_count")
-    val voteCount: Int
+    val voteCount: Int,
+    @SerializedName("favourite_state")
+    var favoritesState : Boolean = false
 ): Parcelable

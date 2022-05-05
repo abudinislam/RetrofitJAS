@@ -1,10 +1,8 @@
 package kz.abudinislam.retrofitjas.model.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kz.abudinislam.retrofitjas.model.Result
+
 
 @Dao
 interface MovieDao {
@@ -17,5 +15,10 @@ interface MovieDao {
 
     @Query("SELECT * FROM movie_table WHERE id == :movieId")
     fun getMovieById(movieId : Int): Result
+
+
+    @Update
+    suspend fun updateState(movie : Result)
+
 
 }
