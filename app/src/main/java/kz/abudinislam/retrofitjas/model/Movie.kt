@@ -14,4 +14,4 @@ data class Movie(
     val totalPages: Int,
     @SerializedName("total_results")
     val totalResults: Int
-): Parcelable
+) : Parcelable

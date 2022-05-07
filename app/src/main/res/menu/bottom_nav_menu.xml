@@ -5,14 +5,14 @@
         android:id="@+id/navigation_movies"
         android:enabled="true"
         android:icon="@drawable/ic_home"
-        android:title="movies_fragment"
+        android:title="Фильмы"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/navigation_favourites"
         android:enabled="true"
         android:icon="@drawable/ic_favorite"
-        android:title="favorites_fragment"
+        android:title="Избранное"
         app:showAsAction="always" />
 
 

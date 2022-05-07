@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
@@ -18,14 +20,13 @@ import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
 import kotlin.coroutines.CoroutineContext
 
 
-class MoviesFragment : Fragment(),CoroutineScope {
+class MoviesFragment : Fragment(), CoroutineScope {
 
     lateinit var binding: FragmentMoviesBinding
     private lateinit var viewModel: MoviesViewModel
     private val adapter = MoviesAdapter()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
-
 
 
     override fun onCreateView(
@@ -40,36 +41,59 @@ class MoviesFragment : Fragment(),CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
         initAndObserveViewModel()
         getClick()
+        logOut()
     }
 
-    private fun getClick(){
+    private fun getClick() {
         launch {
-        binding.rvMovies.adapter = adapter
-        adapter.onMovieClickListener = object: MoviesAdapter.OnMovieClickListener{
-            override fun onMovieClick(result: Result) {
-            val action = MoviesFragmentDirections.actionMoviesFragmentToDetailFragment(result.id)
-            findNavController().navigate(action)
+            binding.rvMovies.adapter = adapter
+            adapter.onMovieClickListener = object : MoviesAdapter.OnMovieClickListener {
+                override fun onMovieClick(result: Result) {
+                    val action =
+                        MoviesFragmentDirections.actionMoviesFragmentToDetailFragment(result.id)
+                    findNavController().navigate(action)
+                }
             }
         }
-        }
 
     }
 
-    private fun initAndObserveViewModel(){
+    private fun initAndObserveViewModel() {
         val viewModelProviderFactory = ViewModelProviderFactory(requireActivity())
         viewModel = ViewModelProvider(this, viewModelProviderFactory)[MoviesViewModel::class.java]
 
 
-        viewModel.loadingState.observe(viewLifecycleOwner){
-            when(it){
-                is MoviesViewModel.State.ShowLoading -> binding.progressBar.visibility = View.VISIBLE
+        viewModel.loadingState.observe(viewLifecycleOwner) {
+            when (it) {
+                is MoviesViewModel.State.ShowLoading -> binding.progressBar.visibility =
+                    View.VISIBLE
                 is MoviesViewModel.State.HideLoading -> binding.progressBar.visibility = View.GONE
-                is MoviesViewModel.State.Finish -> viewModel.movies.observe(viewLifecycleOwner){
+                is MoviesViewModel.State.Finish -> viewModel.movies.observe(viewLifecycleOwner) {
                     adapter.submitList(it)
                     binding.rvMovies.adapter = adapter
                 }
             }
         }
 
+    }
+    private fun logOut() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+
+                requireContext().let {
+                    AlertDialog
+                        .Builder(it)
+                        .setMessage("Выйти?")
+                        .setPositiveButton("Да") { dialogInterface, i ->
+                            requireActivity().finish()
+                        }
+                        .setNegativeButton("Нет") { dialogInterface, i -> }
+                        .create()
+                        .show()
+                }
+
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 }

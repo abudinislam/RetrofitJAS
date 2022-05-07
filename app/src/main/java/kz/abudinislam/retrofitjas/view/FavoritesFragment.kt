@@ -68,13 +68,15 @@ class FavoritesFragment : Fragment(), CoroutineScope {
     private fun initAndObserveViewModel() {
         val viewModelProviderFactory = ViewModelProviderFactory(requireActivity())
         viewModel = ViewModelProvider(
-            this, viewModelProviderFactory)[FavoritesViewModel::class.java]
+            this, viewModelProviderFactory
+        )[FavoritesViewModel::class.java]
 
-        viewModel.loadingState.observe(viewLifecycleOwner){
-            when(it){
-                is MoviesViewModel.State.ShowLoading -> binding.pbFavorites.visibility = View.VISIBLE
+        viewModel.loadingState.observe(viewLifecycleOwner) {
+            when (it) {
+                is MoviesViewModel.State.ShowLoading -> binding.pbFavorites.visibility =
+                    View.VISIBLE
                 is MoviesViewModel.State.HideLoading -> binding.pbFavorites.visibility = View.GONE
-                is MoviesViewModel.State.Finish -> viewModel.movies.observe(viewLifecycleOwner){
+                is MoviesViewModel.State.Finish -> viewModel.movies.observe(viewLifecycleOwner) {
                     adapter.submitList(it)
                     binding.rvFavorites.adapter = adapter
                 }
@@ -88,7 +90,8 @@ class FavoritesFragment : Fragment(), CoroutineScope {
             binding.rvFavorites.adapter = adapter
             adapter.onMovieClickListener = object : MoviesAdapter.OnMovieClickListener {
                 override fun onMovieClick(result: Result) {
-                    val action = FavoritesFragmentDirections.actionFavoritesFragmentToDetailFragment(result.id)
+                    val action =
+                        FavoritesFragmentDirections.actionFavoritesFragmentToDetailFragment(result.id)
                     findNavController().navigate(action)
                 }
 

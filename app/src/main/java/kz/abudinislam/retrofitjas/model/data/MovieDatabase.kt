@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import kz.abudinislam.retrofitjas.model.Result
 
 @Database(entities = [Result::class], version = 4)
-abstract class MovieDatabase : RoomDatabase(){
+abstract class MovieDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao
 

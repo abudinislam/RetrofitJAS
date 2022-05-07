@@ -6,21 +6,20 @@ import androidx.recyclerview.widget.ListAdapter
 import com.squareup.picasso.Picasso
 import kz.abudinislam.retrofitjas.databinding.ItemMoviesBinding
 import kz.abudinislam.retrofitjas.model.Result
-import kz.abudinislam.retrofitjas.view.MoviesViewHolder
 
-class MoviesAdapter: ListAdapter<Result, MoviesViewHolder>(MovieDiffCallback){
+class MoviesAdapter : ListAdapter<Result, MoviesViewHolder>(MovieDiffCallback) {
 
-private val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
+    private val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
     var onMovieClickListener: OnMovieClickListener? = null
     var onReachEndListener: OnReachEndListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
-    return MoviesViewHolder(
-        ItemMoviesBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+        return MoviesViewHolder(
+            ItemMoviesBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
         )
-    )
-}
+    }
 
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
@@ -30,7 +29,7 @@ private val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
         }
         with(holder.binding) {
             tvMovieName.text = movie.title
-            Picasso.get().load(IMAGE_URL+movie.posterPath).into(ivMovie)
+            Picasso.get().load(IMAGE_URL + movie.posterPath).into(ivMovie)
 
             root.setOnClickListener {
                 onMovieClickListener?.onMovieClick(movie)// передаём все сведения о фильме при клике на постер

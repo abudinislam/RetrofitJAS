@@ -8,16 +8,16 @@ import kz.abudinislam.retrofitjas.model.Result
 interface MoviesApi { // интерфейс для создания гет запроса
     @GET("movie/popular")
     suspend fun getMoviesList(
-        @Query("api_key") apiKey:String = API_KEY,
-        @Query("language") language:String = LANGUAGE,
-        @Query("page") page:Int = PAGE
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = LANGUAGE,
+        @Query("page") page: Int = PAGE
     ): Response<Movie>
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(
         @Path("movie_id") id: Int,
-        @Query("api_key") apiKey:String = API_KEY,
-        @Query("language") language:String = LANGUAGE
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("language") language: String = LANGUAGE
     ): Response<Result>
 
     @GET("authentication/token/new")

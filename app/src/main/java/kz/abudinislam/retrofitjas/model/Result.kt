@@ -33,5 +33,5 @@ data class Result(
     @SerializedName("vote_count")
     val voteCount: Int,
     @SerializedName("favourite_state")
-    var favoritesState : Boolean = false
-): Parcelable
+    var favoritesState: Boolean = false
+) : Parcelable

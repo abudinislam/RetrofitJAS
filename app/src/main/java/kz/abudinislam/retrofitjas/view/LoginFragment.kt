@@ -26,7 +26,7 @@ class LoginFragment : Fragment(), CoroutineScope {
 
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var  viewModel: LoginViewModel
+    private lateinit var viewModel: LoginViewModel
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
 
@@ -84,15 +84,16 @@ class LoginFragment : Fragment(), CoroutineScope {
     private fun observeLoadingState() {
         viewModel.loadingState.observe(viewLifecycleOwner) {
             when (it) {
-                LoginViewModel.LoadingState.ShowLoading-> binding.pbLoading.visibility = View.VISIBLE
+                LoginViewModel.LoadingState.ShowLoading -> binding.pbLoading.visibility =
+                    View.VISIBLE
                 LoginViewModel.LoadingState.HideLoading -> binding.pbLoading.visibility = View.GONE
                 LoginViewModel.LoadingState.Finish -> {
                     viewModel.sessionId.observe(viewLifecycleOwner) {
                         sessionId = it
                         putDataIntoPref(sessionId)
-                        try{
+                        try {
                             findNavController().navigate(R.id.action_loginFragment_to_navigation_movies)
-                            } catch  (e: Exception) {
+                        } catch (e: Exception) {
                         }
                     }
                 }

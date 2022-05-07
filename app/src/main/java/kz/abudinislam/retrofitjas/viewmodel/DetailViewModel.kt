@@ -15,17 +15,17 @@ import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.data.MovieDao
 
-class DetailViewModel( private val context: Context):ViewModel(),CoroutineScope {
+class DetailViewModel(private val context: Context) : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.Main
     private val movieDao: MovieDao
 
     private val _liveDataDetail = MutableLiveData<Result>()
-    val liveDataDetail:LiveData<Result>
-    get() = _liveDataDetail
+    val liveDataDetail: LiveData<Result>
+        get() = _liveDataDetail
 
     private val _loadingState = MutableLiveData<StateDetail>()
-    val loadingState:LiveData<StateDetail>
-    get() = _loadingState
+    val loadingState: LiveData<StateDetail>
+        get() = _loadingState
 
     init {
         movieDao = MovieDatabase.getDatabase(context).movieDao()
