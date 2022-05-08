@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.drawerlayout.widget.DrawerLayout
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var navView: NavigationView
     private lateinit var bottomNavigation: BottomNavigationView
-    private lateinit var toolbarLayout: AppBarLayout
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var toolbar: MaterialToolbar
     private lateinit var prefSettings: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
@@ -49,8 +50,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        toolbarLayout = binding.includeContent.toolbarLayout
-        toolbar = binding.includeContent.topToolbar
+        appBarLayout = binding.includeContent.appBarLayout
+        toolbar = binding.includeContent.Toolbar
         val view = binding.root
         setContentView(view)
         prefSettings = this.getSharedPreferences(
@@ -61,12 +62,12 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment)
         init()
-        initBottomNav()
+        initBottomNavigation()
         sideBarInit()
-
-
+        setVisibilityToolbar()
 
     }
+
     private fun init() {
 
         viewModel = ViewModelProvider(
@@ -76,25 +77,38 @@ class MainActivity : AppCompatActivity() {
 
         navController = findNavController(R.id.nav_host_fragment)
         bottomNavigation = binding.includeContent.bottomNavigation
-        toolbarLayout = binding.includeContent.toolbarLayout
-        toolbar = binding.includeContent.topToolbar
+        appBarLayout = binding.includeContent.appBarLayout
+        toolbar = binding.includeContent.Toolbar
         drawerLayout = binding.drawerActivityMain
         navView = binding.navView
     }
 
 
+    private fun setVisibilityToolbar() {
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            when (destination.id) {
+                R.id.moviesFragment -> {
+                    bottomNavigation.visibility = View.VISIBLE
+                    appBarLayout.visibility = View.VISIBLE
+                }
+                R.id.favoritesFragment -> {
+                    bottomNavigation.visibility = View.VISIBLE
+                    appBarLayout.visibility = View.VISIBLE
+                }
+                R.id.detailFragment -> {
+                    bottomNavigation.visibility = View.GONE
+                    appBarLayout.visibility = View.GONE
+                }
+                R.id.loginFragment -> {
+                    bottomNavigation.visibility = View.GONE
+                    appBarLayout.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+
     private fun sideBarInit() {
-
-        setSupportActionBar(toolbar)
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_movies,
-                R.id.navigation_favourites,
-                R.id.navigation_login,
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
         navView.menu.findItem(R.id.navigation_movies).isCheckable = false
@@ -104,21 +118,6 @@ class MainActivity : AppCompatActivity() {
             it.isCheckable = false
 
             when (it.itemId) {
-//                R.id.navigation_movies -> {
-//                    val current = findCurrentFragmentId()
-//                    if (current != R.id.moviesFragment) {
-//                        //navController.popBackStack(R.id.loginFragment, false)
-//                        navController.navigate(R.id.navigation_movies)
-//                    }
-//                }
-//                R.id.navigation_favourites -> {
-//                    val current = findCurrentFragmentId()
-//                    if (current != R.id.favoritesFragment) {
-//                        //navController.popBackStack(R.id.loginFragment, false)
-//                        navController.navigate(R.id.navigation_favourites)
-//                    }
-//                }
-
                 R.id.navigation_login -> {
                     this.let {
                         AlertDialog
@@ -126,7 +125,6 @@ class MainActivity : AppCompatActivity() {
                             .setMessage("Выйти?")
                             .setPositiveButton("Да") { dialogInterface, i ->
                                 viewModel.deleteSession()
-                                //navController.popBackStack(R.id.loginFragment, false)
                                 navController.navigate(R.id.navigation_login)
                             }
                             .setNegativeButton("Нет") { dialogInterface, i -> }
@@ -141,34 +139,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun findCurrentFragmentId(): Int {
-        return navController.currentDestination?.id as Int
-    }
 
-    private fun initBottomNav() {
+    private fun initBottomNavigation() {
         binding.includeContent.bottomNavigation.labelVisibilityMode =
             NavigationBarView.LABEL_VISIBILITY_LABELED
         binding.includeContent.bottomNavigation.setupWithNavController(navController)
-//        bottomNavigation.setOnItemSelectedListener {
-//            when (it.itemId) {
-//                R.id.navigation_movies -> {
-//                    val current = findCurrentFragmentId()
-//                    if (current != R.id.moviesFragment) {
-//                        navController.popBackStack(R.id.loginFragment, false)
-//                        navController.navigate(R.id.navigation_movies)
-//                    }
-//                }
-//                R.id.navigation_favourites -> {
-//                    val current = findCurrentFragmentId()
-//                    if (current != R.id.favoritesFragment) {
-//                        navController.popBackStack(R.id.loginFragment, false)
-//                        navController.navigate(R.id.navigation_favourites)
-//                    }
-//                }
-//            }
-//            return@setOnItemSelectedListener true
-//        }
-//    }
+
 
     }
 }

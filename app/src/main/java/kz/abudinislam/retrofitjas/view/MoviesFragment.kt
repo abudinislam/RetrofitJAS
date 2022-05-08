@@ -76,6 +76,7 @@ class MoviesFragment : Fragment(), CoroutineScope {
         }
 
     }
+
     private fun logOut() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

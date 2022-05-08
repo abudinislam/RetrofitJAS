@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.model.Session
 import kz.abudinislam.retrofitjas.model.api.RetrofitService
 
-class MainActivityViewModel(application: Application):AndroidViewModel(application) {
+class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
     private var prefSettings: SharedPreferences = application.getSharedPreferences(
         APP_SETTINGS,
@@ -23,12 +23,14 @@ class MainActivityViewModel(application: Application):AndroidViewModel(applicati
         viewModelScope.launch {
             SESSION_ID = getSessionId()
             try {
-                RetrofitService.getPostApi().deleteSession(sessionId = Session(session_id = SESSION_ID))
+                RetrofitService.getPostApi()
+                    .deleteSession(sessionId = Session(session_id = SESSION_ID))
             } catch (e: Exception) {
                 editor.clear().commit()
             }
         }
     }
+
     private fun getSessionId(): String {
         var session = ""
         try {
@@ -38,6 +40,7 @@ class MainActivityViewModel(application: Application):AndroidViewModel(applicati
         }
         return session
     }
+
     companion object {
 
         private var SESSION_ID = ""
