@@ -16,4 +16,5 @@
             android:id="@+id/action_loginFragment_to_navigation_movies"
             app:destination="@id/navigation_movies" />
     </fragment>
+    <include app:graph="@navigation/navigation_account" />
 </navigation>

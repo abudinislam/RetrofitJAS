@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.AccountFragment"
+    android:background="@color/dark">
+
+
+    <ImageView
+        android:id="@+id/im_camera"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="143dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="140dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <Button
+        android:id="@+id/btn_edit_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/red"
+        android:text="Изменить"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/im_camera"
+        app:layout_constraintStart_toStartOf="@+id/im_camera"
+        app:layout_constraintTop_toBottomOf="@+id/im_camera" />
+</androidx.constraintlayout.widget.ConstraintLayout>
