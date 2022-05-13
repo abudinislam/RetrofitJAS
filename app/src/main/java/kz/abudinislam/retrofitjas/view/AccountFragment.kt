@@ -45,33 +45,8 @@ class AccountFragment : Fragment(),CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onEditPhotoClick()
 
 
     }
-
-    private fun onEditPhotoClick(){
-        binding.btnEditPhoto.setOnClickListener{
-            ImagePicker.with(this)
-                .crop()
-                .compress(1024)
-                .maxResultSize(1080,1080)
-                .start()
-        }
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (resultCode){
-            Activity.RESULT_OK -> {
-                val uri = data?.data
-                binding.imCamera.setImageURI(uri)
-            }
-        }
-    }
-
-
 
 }
