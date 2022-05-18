@@ -1,5 +1,6 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,10 +15,12 @@ import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.data.MovieDao
+import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 
-class DetailViewModel(private val context: Context) : ViewModel(), CoroutineScope {
+class DetailViewModel(application: Application) : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.Main
     private val movieDao: MovieDao
+    private val repository = MoviesRepository(application)
 
     private val _liveDataDetail = MutableLiveData<Result>()
     val liveDataDetail: LiveData<Result>
@@ -28,21 +31,19 @@ class DetailViewModel(private val context: Context) : ViewModel(), CoroutineScop
         get() = _loadingState
 
     init {
-        movieDao = MovieDatabase.getDatabase(context).movieDao()
+        movieDao = MovieDatabase.getDatabase(application).movieDao()
     }
 
 
     fun getMovieDetails(movieId: Int) {
         launch {
             _loadingState.value = StateDetail.ShowLoading
-            val list = withContext(Dispatchers.IO) {
-                var result = movieDao.getMovieById(movieId)
-                result
-            }
+//            val list = withContext(Dispatchers.IO) {
+//                var result = movieDao.getMovieById(movieId)
+//                result
+//            }
 
-            _liveDataDetail.value = list
-
-
+            _liveDataDetail.value = repository.getMovieDetails(movieId)
             _loadingState.value = StateDetail.HideLoading
             _loadingState.value = StateDetail.Finish
         }
@@ -50,15 +51,18 @@ class DetailViewModel(private val context: Context) : ViewModel(), CoroutineScop
 
     fun addOrDeleteFavorite(movieId: Int, sessionId: String) {
         launch {
-            val favoritesState = withContext(Dispatchers.IO) {
-                val movie = movieDao.getMovieById(movieId)
-                val newMovie = movie.copy(favoritesState = !movie.favoritesState)
-                movieDao.updateState(newMovie)
-                newMovie
-            }
-            _liveDataDetail.value = favoritesState
-            val postMovie = PostMovie(media_id = movieId, favorite = favoritesState.favoritesState)
-            RetrofitService.getPostApi().addFavorite(session_id = sessionId, postMovie = postMovie)
+//            val favoritesState = withContext(Dispatchers.IO) {
+//                val movie = movieDao.getMovieById(movieId)
+//                val newMovie = movie.copy(favoritesState = !movie.favoritesState)
+//                movieDao.updateState(newMovie)
+//                newMovie
+//            }
+            val movie = repository.addOrDeleteFavorite(movieId,sessionId)
+            _liveDataDetail.value = movie
+            repository.postMovie(movieId,sessionId,movie)
+
+//            val postMovie = PostMovie(media_id = movieId, favorite = favoritesState.favoritesState)
+//            RetrofitService.getPostApi().addFavorite(session_id = sessionId, postMovie = postMovie)
         }
     }
 

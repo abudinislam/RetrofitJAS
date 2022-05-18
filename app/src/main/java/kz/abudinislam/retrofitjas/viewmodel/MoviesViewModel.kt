@@ -1,5 +1,6 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,11 +15,13 @@ import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.data.MovieDao
+import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 import java.lang.Exception
 
-class MoviesViewModel(private val context: Context) : ViewModel(), CoroutineScope {
+class MoviesViewModel(application: Application) : ViewModel(), CoroutineScope {
     override val coroutineContext: CoroutineContext = Dispatchers.Main
     private val movieDao: MovieDao
+    private val repository = MoviesRepository(application)
 
 
     private val _loadingState = MutableLiveData<State>()
@@ -35,31 +38,31 @@ class MoviesViewModel(private val context: Context) : ViewModel(), CoroutineScop
 
     init {
         getPosts()
-        movieDao = MovieDatabase.getDatabase(context).movieDao()
+        movieDao = MovieDatabase.getDatabase(application).movieDao()
     }
 
 
     private fun getPosts() {
         launch {
             _loadingState.value = State.ShowLoading
-            val list = withContext(Dispatchers.IO) {
-                try {
-                    val response = RetrofitService.getPostApi().getMoviesList()
-                    if (response.isSuccessful) {
-                        val result = response.body()?.results
-                        if (!result.isNullOrEmpty()) {
-                            movieDao.insertAll(result)
-                        }
-                        result
-                    } else {
-                        movieDao.getAll()
-
-                    }
-                } catch (e: Exception) {
-                    movieDao.getAll()
-                }
-            }
-            _movies.value = list
+//            val list = withContext(Dispatchers.IO) {
+//                try {
+//                    val response = RetrofitService.getPostApi().getMoviesList()
+//                    if (response.isSuccessful) {
+//                        val result = response.body()?.results
+//                        if (!result.isNullOrEmpty()) {
+//                            movieDao.insertAll(result)
+//                        }
+//                        result
+//                    } else {
+//                        movieDao.getAll()
+//
+//                    }
+//                } catch (e: Exception) {
+//                    movieDao.getAll()
+//                }
+//            }
+            _movies.value = repository.getMovies()
 
             _loadingState.value = State.HideLoading
             _loadingState.value = State.Finish

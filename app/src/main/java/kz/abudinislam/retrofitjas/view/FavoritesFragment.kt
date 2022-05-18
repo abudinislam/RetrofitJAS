@@ -66,7 +66,7 @@ class FavoritesFragment : Fragment(), CoroutineScope {
     }
 
     private fun initAndObserveViewModel() {
-        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity())
+        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity().application)
         viewModel = ViewModelProvider(
             this, viewModelProviderFactory
         )[FavoritesViewModel::class.java]
