@@ -90,7 +90,7 @@ class DetailFragment : Fragment(), CoroutineScope {
 
 
     private fun getMovieDetails() {
-        viewModel.getMovieDetails(args.result)
+        viewModel.getMovieDetails(args.result, sessionId)
         viewModel.loadingState.observe(viewLifecycleOwner) {
             when (it) {
                 is DetailViewModel.StateDetail.ShowLoading -> {

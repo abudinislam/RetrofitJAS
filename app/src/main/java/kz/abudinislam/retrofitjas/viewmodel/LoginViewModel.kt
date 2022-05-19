@@ -1,19 +1,23 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import android.widget.Toast
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.model.LoginApprove
 import kz.abudinislam.retrofitjas.model.Token
 import kz.abudinislam.retrofitjas.model.api.RetrofitService
+import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 import kotlin.coroutines.CoroutineContext
 
-class LoginViewModel : ViewModel(), CoroutineScope {
-    override val coroutineContext: CoroutineContext = Dispatchers.Main
+class LoginViewModel(application: Application) : AndroidViewModel(application){
+
+    private val repository = MoviesRepository(application)
+    val context = application
+
+
 
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
@@ -24,34 +28,19 @@ class LoginViewModel : ViewModel(), CoroutineScope {
         get() = _sessionId
 
     fun login(data: LoginApprove) {
-
         viewModelScope.launch {
             _loadingState.value = LoadingState.ShowLoading
-            val responseGet = RetrofitService.getPostApi().getToken()
-            if (responseGet.isSuccessful) {
-                val loginApprove = LoginApprove(
+            val session = repository.login(data.username, data.password)
 
-                    username = data.username,
-                    password = data.password,
-                    request_token = responseGet.body()?.request_token as String
-                )
-
-                val responseApprove =
-                    RetrofitService.getPostApi().approveToken(loginApprove = loginApprove)
-                if (responseApprove.isSuccessful) {
-                    val session =
-                        RetrofitService.getPostApi()
-                            .createSession(token = responseApprove.body() as Token)
-                    if (session.isSuccessful) {
-                        _sessionId.value = session.body()?.session_id
-                        _loadingState.value = LoadingState.HideLoading
-                        _loadingState.value = LoadingState.Finish
-                    }
-                } else {
-                    _loadingState.value = LoadingState.HideLoading
-                }
-
+            _sessionId.value = session
+            _loadingState.value = LoadingState.HideLoading
+            if (session.isNotBlank()){
+                _loadingState.value = LoadingState.Finish
             }
+            else{
+                Toast.makeText(context, "Неверные данные", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kz.abudinislam.retrofitjas.model.*
@@ -46,12 +47,25 @@ class MoviesRepository(application: Application) {
         }
     }
 
-    suspend fun getMovieDetails(movieId: Int): Result {
-        return withContext(
-            Dispatchers.IO
-        ) {
-            var result = dao.getMovieById(movieId)
-            result
+    suspend fun getDetail(movieId: Int, sessionId: String?): Result {
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = dao.getMovieById(movieId)
+                if (sessionId != null) {
+                    val response = api.getMovieStates(
+                        movieId,
+                        session_id = sessionId
+                    )
+                    if (response.isSuccessful) {
+                        val favoriteState = response.body()?.favorite as Boolean
+                        result.favoritesState = favoriteState
+                    }
+                }
+                dao.updateState(result)
+                result
+            } catch (e: Exception) {
+                dao.getMovieById(movieId)
+            }
         }
     }
 
@@ -92,59 +106,58 @@ class MoviesRepository(application: Application) {
         }
     }
 
-    suspend fun login(data: LoginApprove) {
-        return withContext(
-            Dispatchers.IO
-        ) {
-            val responseGet = api.getToken()
-            if (responseGet.isSuccessful) {
-                val loginApprove = LoginApprove(
-
-                    username = data.username,
-                    password = data.password,
-                    request_token = responseGet.body()?.request_token as String
-                )
-
-                val responseApprove =
-                    api.approveToken(loginApprove = loginApprove)
-                if (responseApprove.isSuccessful) {
-                    val session =
-                        api.createSession(token = responseApprove.body() as Token)
-                    if (session.isSuccessful) {
-                    }
-                }
-            }
+    private fun getSessionId(): String {
+        var session = ""
+        try {
+            session =
+                prefSettings.getString(SESSION_ID_KEY, "") as String
+        } catch (e: Exception) {
         }
+        return session
     }
 
     suspend fun deleteSession() {
-        return withContext(
-            Dispatchers.IO
-        ) {
-            SESSION_ID = getSessionId()
-            try {
-                RetrofitService.getPostApi()
-                    .deleteSession(sessionId = Session(session_id = MainActivityViewModel.SESSION_ID))
-            } catch (e: Exception) {
-                editor.clear().commit()
-            }
+        SESSION_ID = getSessionId()
+        try {
+            api
+                .deleteSession(sessionId = Session(session_id = SESSION_ID))
+        } catch (e: Exception) {
+            editor.clear().commit()
         }
     }
 
-    suspend fun getSessionId() {
-        withContext(
-            Dispatchers.IO
-        ) {
-            var session = ""
-            try {
-                session =
-                    prefSettings.getString(MainActivityViewModel.SESSION_ID_KEY, "") as String
-            } catch (e: Exception) {
-                return session
+    suspend fun login(username: String, password: String): String {
+        var session = ""
+        try {
+            val responseGet = api.getToken()
+            if (responseGet.isSuccessful) {
+                val loginApprove = LoginApprove(
+                    username = username,
+                    password = password,
+                    request_token = responseGet.body()?.request_token as String
+                )
+                val responseApprove = api.approveToken(
+                    loginApprove = loginApprove
+                )
+                if (responseApprove.isSuccessful) {
+                    val response =
+                        api.createSession(token = responseApprove.body() as Token)
+                    if (response.isSuccessful) {
+                        session = response.body()?.session_id as String
+                    }
+                }
+            } else {
+                Toast.makeText(context, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
             }
-
+        } catch (e: java.lang.Exception) {
+            Toast.makeText(context, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
         }
+
+        return session
     }
+
+
+
 
 
 

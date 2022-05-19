@@ -2,9 +2,7 @@ package kz.abudinislam.retrofitjas.viewmodel
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,8 +15,7 @@ import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.data.MovieDao
 import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 
-class DetailViewModel(application: Application) : ViewModel(), CoroutineScope {
-    override val coroutineContext: CoroutineContext = Dispatchers.Main
+class DetailViewModel(application: Application) :  AndroidViewModel(application) {
     private val movieDao: MovieDao
     private val repository = MoviesRepository(application)
 
@@ -35,22 +32,21 @@ class DetailViewModel(application: Application) : ViewModel(), CoroutineScope {
     }
 
 
-    fun getMovieDetails(movieId: Int) {
-        launch {
+    fun getMovieDetails(movieId: Int, sessionId: String?) {
+        viewModelScope.launch {
             _loadingState.value = StateDetail.ShowLoading
-//            val list = withContext(Dispatchers.IO) {
-//                var result = movieDao.getMovieById(movieId)
-//                result
-//            }
 
-            _liveDataDetail.value = repository.getMovieDetails(movieId)
+
+            _liveDataDetail.value = repository.getDetail(movieId, sessionId)
+
+
             _loadingState.value = StateDetail.HideLoading
             _loadingState.value = StateDetail.Finish
         }
     }
 
     fun addOrDeleteFavorite(movieId: Int, sessionId: String) {
-        launch {
+        viewModelScope.launch {
 //            val favoritesState = withContext(Dispatchers.IO) {
 //                val movie = movieDao.getMovieById(movieId)
 //                val newMovie = movie.copy(favoritesState = !movie.favoritesState)
