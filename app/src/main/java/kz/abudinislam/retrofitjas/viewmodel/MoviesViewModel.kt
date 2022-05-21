@@ -45,23 +45,7 @@ class MoviesViewModel(application: Application) : ViewModel(), CoroutineScope {
     private fun getPosts() {
         launch {
             _loadingState.value = State.ShowLoading
-//            val list = withContext(Dispatchers.IO) {
-//                try {
-//                    val response = RetrofitService.getPostApi().getMoviesList()
-//                    if (response.isSuccessful) {
-//                        val result = response.body()?.results
-//                        if (!result.isNullOrEmpty()) {
-//                            movieDao.insertAll(result)
-//                        }
-//                        result
-//                    } else {
-//                        movieDao.getAll()
 //
-//                    }
-//                } catch (e: Exception) {
-//                    movieDao.getAll()
-//                }
-//            }
             _movies.value = repository.getMovies()
 
             _loadingState.value = State.HideLoading

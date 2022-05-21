@@ -1,5 +1,6 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -8,7 +9,7 @@ import kz.abudinislam.retrofitjas.model.data.MovieDao
 import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kotlin.coroutines.CoroutineContext
 
-class AccountViewModel(private val context: Context): ViewModel(),CoroutineScope {
+class AccountViewModel(application: Application): ViewModel(),CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
     private val movieDao: MovieDao
@@ -16,6 +17,6 @@ class AccountViewModel(private val context: Context): ViewModel(),CoroutineScope
 
 
     init {
-        movieDao = MovieDatabase.getDatabase(context).movieDao()
+        movieDao = MovieDatabase.getDatabase(application).movieDao()
     }
 }

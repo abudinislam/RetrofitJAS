@@ -81,4 +81,9 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     implementation "com.github.dhaval2404:imagepicker:2.1"
+
+
+    //koin
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 }
