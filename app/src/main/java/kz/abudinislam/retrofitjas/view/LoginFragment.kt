@@ -17,7 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.FragmentLoginBinding
 import kz.abudinislam.retrofitjas.model.LoginApprove
+import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
 import kz.abudinislam.retrofitjas.viewmodel.LoginViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.lang.Exception
 
 import kotlin.coroutines.CoroutineContext
@@ -26,7 +28,8 @@ class LoginFragment : Fragment(), CoroutineScope {
 
 
     private lateinit var binding: FragmentLoginBinding
-    private lateinit var viewModel: LoginViewModel
+
+    private  val  viewModel by viewModel<LoginViewModel>()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
 
@@ -51,17 +54,17 @@ class LoginFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViewModel()
+//        initViewModel()
         onLoginClick()
     }
 
-    private fun initViewModel() {
-        viewModel =
-            ViewModelProvider(
-                this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-            )[LoginViewModel::class.java]
-    }
+//    private fun initViewModel() {
+//        viewModel =
+//            ViewModelProvider(
+//                this,
+//                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+//            )[LoginViewModel::class.java]
+//    }
 
     private fun onLoginClick() {
         binding.btnLogin.setOnClickListener {

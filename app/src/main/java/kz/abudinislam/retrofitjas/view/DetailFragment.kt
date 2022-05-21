@@ -18,6 +18,7 @@ import kz.abudinislam.retrofitjas.databinding.FragmentDetailBinding
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
 import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
 
@@ -26,8 +27,9 @@ class DetailFragment : Fragment(), CoroutineScope {
     lateinit var binding: FragmentDetailBinding
     private lateinit var result: Result
     private val args: DetailFragmentArgs by navArgs()
-    private lateinit var viewModel: DetailViewModel
     private lateinit var prefSettings: SharedPreferences
+
+    private  val  viewModel by viewModel<DetailViewModel>()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
 
@@ -51,7 +53,7 @@ class DetailFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getSessionId()
-        initViewModel()
+       // initViewModel()
         getMovieDetails()
 
         setOnClickFavorites()
@@ -66,10 +68,10 @@ class DetailFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private fun initViewModel() {
-        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, viewModelProviderFactory)[DetailViewModel::class.java]
-    }
+//    private fun initViewModel() {
+//        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity().application)
+//        viewModel = ViewModelProvider(this, viewModelProviderFactory)[DetailViewModel::class.java]
+//    }
 
     private fun setOnClickFavorites() {
         binding.ivFavIcon.setOnClickListener {

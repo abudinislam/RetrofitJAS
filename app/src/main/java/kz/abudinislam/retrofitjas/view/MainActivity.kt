@@ -25,15 +25,17 @@ import com.google.android.material.navigation.NavigationView
 import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.ActivityMainBinding
 import kz.abudinislam.retrofitjas.view.adapter.pager.PagerAdapter
+import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
 import kz.abudinislam.retrofitjas.viewmodel.MainActivityViewModel
 import kz.abudinislam.retrofitjas.viewmodel.MoviesViewModel
 import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainActivityViewModel
+    private  val  viewModel by viewModel<MainActivityViewModel>()
 
     private lateinit var navController: NavController
 
@@ -70,10 +72,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
 
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[MainActivityViewModel::class.java]
+//        viewModel = ViewModelProvider(
+//            this,
+//            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+//        )[MainActivityViewModel::class.java]
 
         navController = findNavController(R.id.nav_host_fragment)
         bottomNavigation = binding.includeContent.bottomNavigation

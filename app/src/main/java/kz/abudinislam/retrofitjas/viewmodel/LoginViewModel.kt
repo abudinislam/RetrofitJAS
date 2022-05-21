@@ -1,6 +1,7 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.*
 import kotlinx.coroutines.CoroutineScope
@@ -12,12 +13,8 @@ import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 import kotlin.coroutines.CoroutineContext
 
-class LoginViewModel(application: Application) : AndroidViewModel(application){
-
-    private val repository = MoviesRepository(application)
-    val context = application
-
-
+class LoginViewModel (private var repository: MoviesRepository,private val application: Application
+) : ViewModel() {
 
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
@@ -38,7 +35,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application){
                 _loadingState.value = LoadingState.Finish
             }
             else{
-                Toast.makeText(context, "Неверные данные", Toast.LENGTH_SHORT).show()
+                Toast.makeText(application, "Неверные данные", Toast.LENGTH_SHORT).show()
             }
 
         }

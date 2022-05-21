@@ -8,21 +8,23 @@ import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kz.abudinislam.retrofitjas.model.*
+import kz.abudinislam.retrofitjas.model.api.MoviesApi
 import kz.abudinislam.retrofitjas.model.api.RetrofitService
+import kz.abudinislam.retrofitjas.model.data.MovieDao
 import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.viewmodel.MainActivityViewModel
 import java.lang.Exception
 
-class MoviesRepository(application: Application) {
+class MoviesRepository(
+    private val api: MoviesApi,
+    private val dao: MovieDao,
+    private val sharedPreferences:SharedPreferences,
+    private val application: Application)
 
-    private val api = RetrofitService.getPostApi()
-    private val dao = MovieDatabase.getDatabase(application).movieDao()
+    {
 
-    private val prefSettings: SharedPreferences =
-        application.getSharedPreferences(APP_SETTINGS, Context.MODE_PRIVATE)
-                as SharedPreferences
-    private var context = application
-    private var editor: SharedPreferences.Editor = prefSettings.edit()
+
+    private var editor: SharedPreferences.Editor = sharedPreferences.edit()
 
 
     suspend fun getMovies(): List<Result>? {
@@ -110,7 +112,7 @@ class MoviesRepository(application: Application) {
         var session = ""
         try {
             session =
-                prefSettings.getString(SESSION_ID_KEY, "") as String
+                sharedPreferences.getString(SESSION_ID_KEY, "") as String
         } catch (e: Exception) {
         }
         return session
@@ -147,10 +149,10 @@ class MoviesRepository(application: Application) {
                     }
                 }
             } else {
-                Toast.makeText(context, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
+                Toast.makeText(application, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
             }
         } catch (e: java.lang.Exception) {
-            Toast.makeText(context, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
+            Toast.makeText(application, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
         }
 
         return session

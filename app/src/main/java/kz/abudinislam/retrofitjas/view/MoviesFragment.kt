@@ -15,15 +15,17 @@ import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.databinding.FragmentMoviesBinding
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.view.adapter.MoviesAdapter
+import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
 import kz.abudinislam.retrofitjas.viewmodel.MoviesViewModel
 import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
 
 class MoviesFragment : Fragment(), CoroutineScope {
 
     lateinit var binding: FragmentMoviesBinding
-    private lateinit var viewModel: MoviesViewModel
+    private  val  viewModel by viewModel<MoviesViewModel>()
     private val adapter = MoviesAdapter()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
@@ -59,8 +61,8 @@ class MoviesFragment : Fragment(), CoroutineScope {
     }
 
     private fun initAndObserveViewModel() {
-        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity().application)
-        viewModel = ViewModelProvider(this, viewModelProviderFactory)[MoviesViewModel::class.java]
+//        val viewModelProviderFactory = ViewModelProviderFactory(requireActivity().application)
+//        viewModel = ViewModelProvider(this, viewModelProviderFactory)[MoviesViewModel::class.java]
 
 
         viewModel.loadingState.observe(viewLifecycleOwner) {

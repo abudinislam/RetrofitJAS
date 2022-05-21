@@ -1,27 +1,21 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
-import android.app.Application
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kz.abudinislam.retrofitjas.model.Result
+import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 import kz.abudinislam.retrofitjas.view.adapter.MoviesAdapter
 import kotlin.coroutines.CoroutineContext
-import kz.abudinislam.retrofitjas.model.Result
-import kz.abudinislam.retrofitjas.model.api.RetrofitService
-import kz.abudinislam.retrofitjas.model.data.MovieDatabase
-import kz.abudinislam.retrofitjas.model.data.MovieDao
-import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
-import java.lang.Exception
 
-class MoviesViewModel(application: Application) : ViewModel(), CoroutineScope {
+class MoviesViewModel(
+    private var repository: MoviesRepository
+) : ViewModel(), CoroutineScope {
+
     override val coroutineContext: CoroutineContext = Dispatchers.Main
-    private val movieDao: MovieDao
-    private val repository = MoviesRepository(application)
 
 
     private val _loadingState = MutableLiveData<State>()
@@ -38,7 +32,7 @@ class MoviesViewModel(application: Application) : ViewModel(), CoroutineScope {
 
     init {
         getPosts()
-        movieDao = MovieDatabase.getDatabase(application).movieDao()
+//        movieDao = MovieDatabase.getDatabase(application).movieDao()
     }
 
 
@@ -61,11 +55,10 @@ class MoviesViewModel(application: Application) : ViewModel(), CoroutineScope {
         }
     }
 
-
     sealed class State {
         object ShowLoading : State()
         object HideLoading : State()
         object Finish : State()
-
     }
 }
+

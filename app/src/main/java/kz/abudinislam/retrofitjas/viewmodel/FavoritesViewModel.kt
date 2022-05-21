@@ -16,11 +16,13 @@ import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 import kotlin.coroutines.CoroutineContext
 
-class FavoritesViewModel(application: Application) : ViewModel(), CoroutineScope {
+class FavoritesViewModel(
+    private var repository: MoviesRepository
+) : ViewModel(),CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
-    private val movieDao: MovieDao
-    private val repository = MoviesRepository(application)
+
+
 
 
     private val _movies = MutableLiveData<List<Result>?>()
@@ -31,29 +33,10 @@ class FavoritesViewModel(application: Application) : ViewModel(), CoroutineScope
     val loadingState: LiveData<MoviesViewModel.State>
         get() = _loadingState
 
-    init {
-        movieDao = MovieDatabase.getDatabase(application).movieDao()
-    }
 
     fun getPosts(session: String) {
         launch {
             _loadingState.value = MoviesViewModel.State.ShowLoading
-//            val list = withContext(Dispatchers.IO) {
-//                try {
-//                    val response = RetrofitService.getPostApi().getFavorites(session_id = session)
-//                    if (response.isSuccessful) {
-//                        val result = response.body()?.results
-//                        if (!result.isNullOrEmpty()) {
-//                            movieDao.insertAll(result)
-//                        }
-//                        result
-//                    } else {
-//                        movieDao.getAll()
-//                    }
-//                } catch (e: Exception) {
-//                    movieDao.getAll()
-//                }
-//            }
             _movies.value = repository.getPosts(sessionId = session)
 
             _loadingState.value = MoviesViewModel.State.HideLoading

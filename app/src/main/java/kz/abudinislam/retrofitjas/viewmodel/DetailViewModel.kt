@@ -15,9 +15,10 @@ import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.data.MovieDao
 import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 
-class DetailViewModel(application: Application) :  AndroidViewModel(application) {
-    private val movieDao: MovieDao
-    private val repository = MoviesRepository(application)
+class DetailViewModel(
+    private var repository: MoviesRepository
+) : ViewModel() {
+
 
     private val _liveDataDetail = MutableLiveData<Result>()
     val liveDataDetail: LiveData<Result>
@@ -27,9 +28,6 @@ class DetailViewModel(application: Application) :  AndroidViewModel(application)
     val loadingState: LiveData<StateDetail>
         get() = _loadingState
 
-    init {
-        movieDao = MovieDatabase.getDatabase(application).movieDao()
-    }
 
 
     fun getMovieDetails(movieId: Int, sessionId: String?) {
@@ -47,18 +45,10 @@ class DetailViewModel(application: Application) :  AndroidViewModel(application)
 
     fun addOrDeleteFavorite(movieId: Int, sessionId: String) {
         viewModelScope.launch {
-//            val favoritesState = withContext(Dispatchers.IO) {
-//                val movie = movieDao.getMovieById(movieId)
-//                val newMovie = movie.copy(favoritesState = !movie.favoritesState)
-//                movieDao.updateState(newMovie)
-//                newMovie
-//            }
-            val movie = repository.addOrDeleteFavorite(movieId,sessionId)
+//
+            val movie = repository.addOrDeleteFavorite(movieId, sessionId)
             _liveDataDetail.value = movie
-            repository.postMovie(movieId,sessionId,movie)
-
-//            val postMovie = PostMovie(media_id = movieId, favorite = favoritesState.favoritesState)
-//            RetrofitService.getPostApi().addFavorite(session_id = sessionId, postMovie = postMovie)
+            repository.postMovie(movieId, sessionId, movie)
         }
     }
 
