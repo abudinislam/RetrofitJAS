@@ -9,7 +9,7 @@
     <include app:graph="@navigation/favorites" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="kz.abudinislam.retrofitjas.view.LoginFragment"
+        android:name="kz.abudinislam.retrofitjas.presentation.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action

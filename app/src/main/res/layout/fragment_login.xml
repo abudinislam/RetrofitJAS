@@ -10,7 +10,7 @@
     android:paddingTop="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="10dp"
-    tools:context=".view.LoginFragment"
+    tools:context=".presentation.view.LoginFragment"
     android:background="@color/dark">
 
 

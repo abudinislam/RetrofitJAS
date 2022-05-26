@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/moviesFragment"
-        android:name="kz.abudinislam.retrofitjas.view.MoviesFragment"
+        android:name="kz.abudinislam.retrofitjas.presentation.view.MoviesFragment"
         android:label="fragment_movies"
         tools:layout="@layout/fragment_movies" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="kz.abudinislam.retrofitjas.view.DetailFragment"
+        android:name="kz.abudinislam.retrofitjas.presentation.view.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
