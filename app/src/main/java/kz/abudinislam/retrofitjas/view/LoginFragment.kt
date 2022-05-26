@@ -4,24 +4,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.FragmentLoginBinding
 import kz.abudinislam.retrofitjas.model.LoginApprove
-import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
 import kz.abudinislam.retrofitjas.viewmodel.LoginViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.lang.Exception
-
 import kotlin.coroutines.CoroutineContext
 
 class LoginFragment : Fragment(), CoroutineScope {
@@ -89,8 +85,10 @@ class LoginFragment : Fragment(), CoroutineScope {
             when (it) {
                 LoginViewModel.LoadingState.ShowLoading -> binding.pbLoading.visibility =
                     View.VISIBLE
-                LoginViewModel.LoadingState.HideLoading -> binding.pbLoading.visibility = View.GONE
+                LoginViewModel.LoadingState.HideLoading ->
+                    Toast.makeText(requireContext(), "Неверные данные", Toast.LENGTH_SHORT).show()
                 LoginViewModel.LoadingState.Finish -> {
+                binding.pbLoading.visibility = View.GONE
                     viewModel.sessionId.observe(viewLifecycleOwner) {
                         sessionId = it
                         putDataIntoPref(sessionId)

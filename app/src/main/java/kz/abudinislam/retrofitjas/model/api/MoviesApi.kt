@@ -69,6 +69,12 @@ interface MoviesApi { // интерфейс для создания гет за�
         @Query("session_id") session_id: String = SESSION_ID
     ): Response<MovieState>
 
+    @GET("account")
+    suspend fun getAccountInfo(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("session_id") session_id: String = SESSION_ID
+    ): Response<AccountInfo>
+
 
     companion object {
 

@@ -2,20 +2,14 @@ package kz.abudinislam.retrofitjas.view
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.onNavDestinationSelected
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -24,11 +18,7 @@ import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.ActivityMainBinding
-import kz.abudinislam.retrofitjas.view.adapter.pager.PagerAdapter
-import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
 import kz.abudinislam.retrofitjas.viewmodel.MainActivityViewModel
-import kz.abudinislam.retrofitjas.viewmodel.MoviesViewModel
-import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

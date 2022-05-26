@@ -1,18 +1,11 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
-import android.app.Application
-import android.content.Context
-import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kz.abudinislam.retrofitjas.model.PostMovie
-import kotlin.coroutines.CoroutineContext
 import kz.abudinislam.retrofitjas.model.Result
-import kz.abudinislam.retrofitjas.model.api.RetrofitService
-import kz.abudinislam.retrofitjas.model.data.MovieDatabase
-import kz.abudinislam.retrofitjas.model.data.MovieDao
 import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
 
 class DetailViewModel(

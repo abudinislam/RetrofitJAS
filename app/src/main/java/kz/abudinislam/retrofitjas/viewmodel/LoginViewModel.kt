@@ -1,17 +1,14 @@
 package kz.abudinislam.retrofitjas.viewmodel
 
 import android.app.Application
-import android.content.Context
 import android.widget.Toast
-import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.model.LoginApprove
-import kz.abudinislam.retrofitjas.model.Token
-import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
-import kotlin.coroutines.CoroutineContext
 
 class LoginViewModel (private var repository: MoviesRepository,private val application: Application
 ) : ViewModel() {
@@ -30,12 +27,11 @@ class LoginViewModel (private var repository: MoviesRepository,private val appli
             val session = repository.login(data.username, data.password)
 
             _sessionId.value = session
-            _loadingState.value = LoadingState.HideLoading
             if (session.isNotBlank()){
                 _loadingState.value = LoadingState.Finish
             }
             else{
-                Toast.makeText(application, "Неверные данные", Toast.LENGTH_SHORT).show()
+                _loadingState.value = LoadingState.HideLoading
             }
 
         }

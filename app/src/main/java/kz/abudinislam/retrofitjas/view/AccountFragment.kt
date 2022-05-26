@@ -1,33 +1,29 @@
 package kz.abudinislam.retrofitjas.view
 
 import android.Manifest
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.github.dhaval2404.imagepicker.ImagePicker
+import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.FragmentAccountBinding
+import kz.abudinislam.retrofitjas.model.AccountInfo
 import kz.abudinislam.retrofitjas.viewmodel.AccountViewModel
 import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
-import kotlin.coroutines.CoroutineContext
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AccountFragment : Fragment(R.layout.fragment_account) {
     private lateinit var binding: FragmentAccountBinding
+    private  val  viewModel by viewModel<AccountViewModel>()
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -110,13 +106,18 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == AppCompatActivity.RESULT_OK) {
+            val uri = data?.data
             when (requestCode) {
                 PERMISSION_FOR_CAMERA -> {
-                    val imageBitmap = data?.extras?.get("data") as Bitmap
-                    binding.imCamera.setImageBitmap(imageBitmap)
+                    binding.imCamera.setImageURI(uri)
+                    val user = AccountInfo(userAvatar = uri.toString())
+                    viewModel.insertUser(user)
+
+//                    val parsedUri = Uri.parse(user.avatar_uri)
+//                    binding.imCamera.setImageURI(parsedUri)
                 }
                 PERMISSION_FOR_GALLERY -> {
-                    binding.imCamera.setImageURI(data?.data)
+                    binding.imCamera.setImageURI(uri)
                 }
             }
         }

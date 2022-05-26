@@ -2,30 +2,30 @@ package kz.abudinislam.retrofitjas.model.repository
 
 import android.app.Application
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kz.abudinislam.retrofitjas.model.*
 import kz.abudinislam.retrofitjas.model.api.MoviesApi
-import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kz.abudinislam.retrofitjas.model.data.MovieDao
-import kz.abudinislam.retrofitjas.model.data.MovieDatabase
-import kz.abudinislam.retrofitjas.viewmodel.MainActivityViewModel
-import java.lang.Exception
 
 class MoviesRepository(
     private val api: MoviesApi,
     private val dao: MovieDao,
-    private val sharedPreferences:SharedPreferences,
-    private val application: Application)
+    private val sharedPreferences: SharedPreferences,
+    private val application: Application
+) {
 
-    {
+    private var prefSettings: SharedPreferences = application.getSharedPreferences(
+        APP_SETTINGS,
+        Context.MODE_PRIVATE
+    ) as SharedPreferences
+    private var editor: SharedPreferences.Editor = prefSettings.edit()
 
-
-    private var editor: SharedPreferences.Editor = sharedPreferences.edit()
-
+    fun insertUser(user: AccountInfo) {
+        dao.insertUser(user)
+    }
 
     suspend fun getMovies(): List<Result>? {
         return withContext(
@@ -112,7 +112,7 @@ class MoviesRepository(
         var session = ""
         try {
             session =
-                sharedPreferences.getString(SESSION_ID_KEY, "") as String
+                prefSettings.getString(SESSION_ID_KEY, "") as String
         } catch (e: Exception) {
         }
         return session
@@ -149,7 +149,8 @@ class MoviesRepository(
                     }
                 }
             } else {
-                Toast.makeText(application, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
+                Toast.makeText(application, "Нет подключение к интернету", Toast.LENGTH_SHORT)
+                    .show()
             }
         } catch (e: java.lang.Exception) {
             Toast.makeText(application, "Нет подключение к интернету", Toast.LENGTH_SHORT).show()
@@ -157,12 +158,6 @@ class MoviesRepository(
 
         return session
     }
-
-
-
-
-
-
 
     companion object {
 

@@ -7,7 +7,6 @@ import kz.abudinislam.retrofitjas.model.api.RetrofitService
 import kz.abudinislam.retrofitjas.model.data.MovieDao
 import kz.abudinislam.retrofitjas.model.data.MovieDatabase
 import kz.abudinislam.retrofitjas.model.repository.MoviesRepository
-import kz.abudinislam.retrofitjas.view.DetailFragmentArgs
 import kz.abudinislam.retrofitjas.viewmodel.*
 import org.koin.dsl.module
 
@@ -33,6 +32,8 @@ val viewModelModule = module {
     single { MainActivityViewModel(repository = get()) }
     single { LoginViewModel(repository = get(), application = get()) }
     single { MoviesViewModel(repository = get()) }
+    single { AccountViewModel(repository = get()) }
+
 }
 val appModule = networkModule + daoModule + repositoryModule + viewModelModule
 

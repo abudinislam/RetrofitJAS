@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import kz.abudinislam.retrofitjas.model.AccountInfo
 import kz.abudinislam.retrofitjas.model.Result
 
-@Database(entities = [Result::class], version = 4)
+@Database(entities = [Result::class, AccountInfo::class], version = 5)
 abstract class MovieDatabase : RoomDatabase() {
 
     abstract fun movieDao(): MovieDao

@@ -3,12 +3,10 @@ package kz.abudinislam.retrofitjas.view
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +15,6 @@ import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.FragmentDetailBinding
 import kz.abudinislam.retrofitjas.model.Result
 import kz.abudinislam.retrofitjas.viewmodel.DetailViewModel
-import kz.abudinislam.retrofitjas.viewmodel.ViewModelProviderFactory
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
