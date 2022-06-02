@@ -4,14 +4,15 @@ plugins {
     id 'kotlin-parcelize'
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-kapt'
-}
 
+}
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdk 31
 
     defaultConfig {
         applicationId "kz.abudinislam.retrofitjas"
-        minSdk 21
+        minSdk 29
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -86,4 +87,9 @@ dependencies {
     //koin
     implementation "io.insert-koin:koin-core:$koin_version"
     implementation "io.insert-koin:koin-android:$koin_version"
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:30.1.0')
+    implementation 'com.google.firebase:firebase-messaging:23.0.5'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
 }
