@@ -35,6 +35,9 @@ class LoginFragment : Fragment(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         prefSettings =
             context?.getSharedPreferences(APP_SETTINGS, Context.MODE_PRIVATE) as SharedPreferences
+        if (prefSettings.getString(SESSION_ID_KEY,null)!=null){
+            findNavController().navigate(R.id.action_loginFragment_to_navigation_movies)
+        }
         editor = prefSettings.edit()
         super.onCreate(savedInstanceState)
     }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -16,6 +17,9 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.ActivityMainBinding
 import kz.abudinislam.retrofitjas.presentation.viewmodel.MainActivityViewModel
@@ -38,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +57,10 @@ class MainActivity : AppCompatActivity() {
         ) as SharedPreferences
         editor = prefSettings.edit()
 
+        firebaseAnalytics = Firebase.analytics
+
+
+
 
         navController = findNavController(R.id.nav_host_fragment)
         init()
@@ -59,6 +69,8 @@ class MainActivity : AppCompatActivity() {
         setVisibilityToolbar()
 
     }
+
+
 
     private fun init() {
 
@@ -109,6 +121,9 @@ class MainActivity : AppCompatActivity() {
             drawerLayout.closeDrawers()
             it.isCheckable = false
 
+
+
+
             when (it.itemId) {
                 R.id.navigation_login -> {
                     this.let {
@@ -117,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                             .setMessage("Выйти?")
                             .setPositiveButton("Да") { dialogInterface, i ->
                                 viewModel.deleteSession()
-                                navController.navigate(R.id.navigation_login)
+                                navController.popBackStack()
                             }
                             .setNegativeButton("Нет") { dialogInterface, i -> }
                             .create()
@@ -140,3 +155,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+

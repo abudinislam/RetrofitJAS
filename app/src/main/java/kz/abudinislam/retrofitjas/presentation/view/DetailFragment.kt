@@ -103,6 +103,10 @@ class DetailFragment : Fragment(), CoroutineScope {
                         Picasso.get().load(IMAGE_URL + it.posterPath).into(binding.ivDetailIcon)
                         binding.tvMovieDesc.text = it.title
                         binding.tvMovieOverview.text = it.overview
+                        binding.tvDateRelease.text = it.releaseDate
+                        binding.tvRating.text = it.voteAverage.toString()
+
+
 
                     }
                 }

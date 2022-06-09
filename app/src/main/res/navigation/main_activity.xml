@@ -17,4 +17,5 @@
             app:destination="@id/navigation_movies" />
     </fragment>
     <include app:graph="@navigation/navigation_account" />
+    <include app:graph="@navigation/navigation_map" />
 </navigation>
