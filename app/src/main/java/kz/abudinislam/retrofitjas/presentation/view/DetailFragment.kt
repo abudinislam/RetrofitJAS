@@ -105,6 +105,7 @@ class DetailFragment : Fragment(), CoroutineScope {
                         binding.tvMovieOverview.text = it.overview
                         binding.tvDateRelease.text = it.releaseDate
                         binding.tvRating.text = it.voteAverage.toString()
+                        binding.tvRuntime.text = it.runtime.toString()
 
 
 
