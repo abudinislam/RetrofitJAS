@@ -11,7 +11,6 @@ class MainActivityViewModel(
 ) : ViewModel() {
 
     fun deleteSession() {
-
         viewModelScope.launch {
             deleteSessionUseCase.invoke()
         }

@@ -3,11 +3,13 @@ package kz.abudinislam.retrofitjas.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.domain.model.Result
 import kz.abudinislam.retrofitjas.data.MoviesRepositoryImpl
+import kz.abudinislam.retrofitjas.domain.usecase.DeleteSessionUseCase
 import kz.abudinislam.retrofitjas.domain.usecase.GetMoviesUseCase
 import kz.abudinislam.retrofitjas.domain.usecase.GetPostsUseCase
 import kz.abudinislam.retrofitjas.presentation.view.adapter.MoviesAdapter
@@ -15,7 +17,8 @@ import kotlin.coroutines.CoroutineContext
 
 class MoviesViewModel(
     private val getPostsUseCase: GetPostsUseCase,
-    private val getMoviesUseCase: GetMoviesUseCase
+    private val getMoviesUseCase: GetMoviesUseCase,
+    private val deleteSessionUseCase: DeleteSessionUseCase
 ) : ViewModel(), CoroutineScope {
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
@@ -58,10 +61,20 @@ class MoviesViewModel(
         }
     }
 
+    fun deleteSession() {
+        viewModelScope.launch {
+            deleteSessionUseCase.invoke()
+        }
+    }
+
+
+
     sealed class State {
         object ShowLoading : State()
         object HideLoading : State()
         object Finish : State()
     }
+
+
 }
 

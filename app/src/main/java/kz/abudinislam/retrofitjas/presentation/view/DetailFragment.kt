@@ -3,6 +3,7 @@ package kz.abudinislam.retrofitjas.presentation.view
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,7 @@ class DetailFragment : Fragment(), CoroutineScope {
     private val args: DetailFragmentArgs by navArgs()
     private lateinit var prefSettings: SharedPreferences
 
-    private  val  viewModel by viewModel<DetailViewModel>()
+    private val viewModel by viewModel<DetailViewModel>()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
 
@@ -50,7 +51,7 @@ class DetailFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getSessionId()
-       // initViewModel()
+        // initViewModel()
         getMovieDetails()
 
         setOnClickFavorites()
@@ -106,6 +107,7 @@ class DetailFragment : Fragment(), CoroutineScope {
                         binding.tvDateRelease.text = it.releaseDate
                         binding.tvRating.text = it.voteAverage.toString()
                         binding.tvRuntime.text = it.runtime.toString()
+                        //Log.d("Duration of film", it.runtime.toString())
 
 
 

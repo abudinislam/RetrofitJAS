@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.databinding.FragmentMoviesBinding
+import kz.abudinislam.retrofitjas.di.repositoryModule
 import kz.abudinislam.retrofitjas.domain.model.Result
 import kz.abudinislam.retrofitjas.presentation.view.adapter.MoviesAdapter
 import kz.abudinislam.retrofitjas.presentation.viewmodel.MoviesViewModel
@@ -85,7 +86,9 @@ class MoviesFragment : Fragment(), CoroutineScope {
                         .Builder(it)
                         .setMessage("Выйти?")
                         .setPositiveButton("Да") { dialogInterface, i ->
-                            requireActivity().finish()
+                            viewModel.deleteSession()
+                           requireActivity().finish()
+
                         }
                         .setNegativeButton("Нет") { dialogInterface, i -> }
                         .create()

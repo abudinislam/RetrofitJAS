@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +19,10 @@ import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.FragmentLoginBinding
 import kz.abudinislam.retrofitjas.domain.model.LoginApprove
 import kz.abudinislam.retrofitjas.presentation.viewmodel.LoginViewModel
+import kz.abudinislam.retrofitjas.utils.LoadingState
+import kz.abudinislam.retrofitjas.utils.LoadingState.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import retrofit2.Response.error
 import kotlin.coroutines.CoroutineContext
 
 class LoginFragment : Fragment(), CoroutineScope {
@@ -25,7 +30,7 @@ class LoginFragment : Fragment(), CoroutineScope {
 
     private lateinit var binding: FragmentLoginBinding
 
-    private  val  viewModel by viewModel<LoginViewModel>()
+    private val viewModel by viewModel<LoginViewModel>()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
 
@@ -35,7 +40,7 @@ class LoginFragment : Fragment(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         prefSettings =
             context?.getSharedPreferences(APP_SETTINGS, Context.MODE_PRIVATE) as SharedPreferences
-        if (prefSettings.getString(SESSION_ID_KEY,null)!=null){
+        if (prefSettings.getString(SESSION_ID_KEY, null) != null) {
             findNavController().navigate(R.id.action_loginFragment_to_navigation_movies)
         }
         editor = prefSettings.edit()
@@ -53,7 +58,8 @@ class LoginFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        initViewModel()
+        observeViewModel()
+        addTextChangeListeners()
         onLoginClick()
     }
 
@@ -68,30 +74,84 @@ class LoginFragment : Fragment(), CoroutineScope {
     private fun onLoginClick() {
         binding.btnLogin.setOnClickListener {
             hideKeyboard(requireActivity())
-            if (!binding.etUsername.text.isNullOrBlank() && !binding.etPassword.text.isNullOrBlank()) {
+
+            viewModel.resetErrorInputPassword()
+            viewModel.resetErrorInputName()
+
+
+            //if (!binding.etUsername.text.isNullOrBlank() && !binding.etPassword.text.isNullOrBlank()) {
+
+            val userName  = binding.etUsername.text.toString().trim()
+            val password  = binding.etPassword.text.toString().trim()
+
                 val data = LoginApprove(
-                    username = binding.etUsername.text.toString().trim(),
-                    password = binding.etPassword.text.toString().trim(),
+                    username = userName,
+                    password = password,
                     request_token = ""
                 )
-                viewModel.login(data)
+                viewModel.login(data, userName, password)
                 observeLoadingState()
-            } else {
-                Toast.makeText(requireContext(), "Введите данные", Toast.LENGTH_SHORT).show()
             }
+//        else {
+//                Toast.makeText(requireContext(), "Введите данные", Toast.LENGTH_SHORT).show()
+//            }
+        }
+
+
+
+    private fun observeViewModel() {
+        viewModel.errorInputCount.observe(viewLifecycleOwner) {
+            val message = if (it) {
+                "Неверные данные"
+            } else {
+                null
+            }
+            binding.etPassword.error = message
+        }
+        viewModel.errorInputName.observe(viewLifecycleOwner) {
+            val message = if (it) {
+                "Неверные данные"
+            } else {
+                null
+            }
+            binding.etUsername.error = message
         }
 
     }
 
+    private fun addTextChangeListeners() {
+        binding.etUsername.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.resetErrorInputName()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+        binding.etPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.resetErrorInputPassword()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+    }
+
+
     private fun observeLoadingState() {
         viewModel.loadingState.observe(viewLifecycleOwner) {
             when (it) {
-                LoginViewModel.LoadingState.ShowLoading -> binding.pbLoading.visibility =
+                LoginViewModel.LoadingState.HideLoading -> binding.pbLoading.visibility =
                     View.VISIBLE
-                LoginViewModel.LoadingState.HideLoading ->
-                    Toast.makeText(requireContext(), "Неверные данные", Toast.LENGTH_SHORT).show()
-                LoginViewModel.LoadingState.Finish -> {
-                binding.pbLoading.visibility = View.GONE
+                LoginViewModel.LoadingState.Finish -> binding.pbLoading.visibility = View.GONE
+                LoginViewModel.LoadingState.ShowLoading -> {
                     viewModel.sessionId.observe(viewLifecycleOwner) {
                         sessionId = it
                         putDataIntoPref(sessionId)

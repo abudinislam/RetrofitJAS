@@ -10,7 +10,8 @@ import kz.abudinislam.retrofitjas.domain.model.LoginApprove
 import kz.abudinislam.retrofitjas.data.MoviesRepositoryImpl
 import kz.abudinislam.retrofitjas.domain.usecase.LoginUseCase
 
-class LoginViewModel (private val loginUseCase: LoginUseCase, private val application: Application
+class LoginViewModel(
+    application: Application, private val loginUseCase: LoginUseCase,
 ) : ViewModel() {
 
     private val _loadingState = MutableLiveData<LoadingState>()
@@ -21,22 +22,68 @@ class LoginViewModel (private val loginUseCase: LoginUseCase, private val applic
     val sessionId: LiveData<String>
         get() = _sessionId
 
-    fun login(data: LoginApprove) {
-        viewModelScope.launch {
-            _loadingState.value = LoadingState.ShowLoading
-            val session = loginUseCase.invoke(data.username, data.password)
 
-            _sessionId.value = session
-            if (session.isNotBlank()){
+    private val _errorInputName = MutableLiveData<Boolean>()
+    val errorInputName: LiveData<Boolean>
+        get() = _errorInputName
+
+    private val _errorInputCount = MutableLiveData<Boolean>()
+    val errorInputCount: LiveData<Boolean>
+        get() = _errorInputCount
+
+
+    fun login(data: LoginApprove, userName: String, password: String) {
+        viewModelScope.launch {
+            try {
+                val result = validateInput(userName, password)
+                if (result) {
+                    _loadingState.value = LoadingState.ShowLoading
+                    val session = loginUseCase.invoke(data.username, data.password)
+                    if (session.isNotBlank()) {
+                        _sessionId.value = session
+                        _loadingState.value = LoadingState.Finish
+                        _loadingState.value = LoadingState.ShowLoading
+
+                    } else {
+                        _loadingState.value = LoadingState.Finish
+                        _errorInputName.value = true
+                        _errorInputCount.value = true
+                    }
+
+                } else {
+                    _errorInputName.value = true
+                    _errorInputCount.value = true
+                }
+
+            } catch (e: Exception) {
                 _loadingState.value = LoadingState.Finish
-            }
-            else{
-                _loadingState.value = LoadingState.HideLoading
+                _errorInputName.value = true
+                _errorInputCount.value = true
             }
 
         }
     }
 
+    private fun validateInput(userName: String, password: String): Boolean {
+        var result = true
+        if (userName.isBlank()) {
+            _errorInputName.value = true
+            result = false
+        }
+        if (password.isBlank()) {
+            _errorInputCount.value = true
+            result = false
+        }
+        return result
+    }
+
+    fun resetErrorInputName() {
+        _errorInputName.value = false
+    }
+
+    fun resetErrorInputPassword() {
+        _errorInputCount.value = false
+    }
 
     sealed class LoadingState {
         object ShowLoading : LoadingState()

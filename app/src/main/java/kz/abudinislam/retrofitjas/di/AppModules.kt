@@ -50,7 +50,8 @@ val viewModelModule = module {
     viewModel {
         MoviesViewModel(
             getPostsUseCase = get(),
-            getMoviesUseCase = get()
+            getMoviesUseCase = get(),
+            deleteSessionUseCase = get()
         )
     }
     viewModel { AccountViewModel(insertUserUseCase = get()) }
