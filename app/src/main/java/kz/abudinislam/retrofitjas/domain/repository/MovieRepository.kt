@@ -1,7 +1,9 @@
 package kz.abudinislam.retrofitjas.domain.repository
 
+import kz.abudinislam.retrofitjas.data.cast.CreditResponse
 import kz.abudinislam.retrofitjas.domain.model.AccountInfo
 import kz.abudinislam.retrofitjas.domain.model.Result
+import retrofit2.Response
 
 interface MovieRepository {
 
@@ -22,5 +24,9 @@ interface MovieRepository {
     suspend fun login(username: String, password: String): String
 
     fun insertUser(user: AccountInfo)
+
+    suspend fun getCreditResponse(movieId: Int): Response<CreditResponse>
+
+
 
 }

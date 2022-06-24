@@ -40,7 +40,8 @@ val viewModelModule = module {
         DetailViewModel(
             getDetailUseCase = get(),
             addOrDeleteFavoriteUseCase = get(),
-            postMovieUseCase = get()
+            postMovieUseCase = get(),
+            getCreditResponseUseCase = get()
         )
 
     }
@@ -67,6 +68,7 @@ val useCaseModule = module {
     single { GetSessionIdUseCase(movieRepository = get()) }
     single { LoginUseCase(movieRepository = get()) }
     single { PostMovieUseCase(movieRepository = get()) }
+    single { GetCreditResponseUseCase(movieRepository = get ()) }
 }
 
 

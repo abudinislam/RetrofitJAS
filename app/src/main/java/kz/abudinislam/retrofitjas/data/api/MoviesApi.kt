@@ -1,6 +1,7 @@
 package kz.abudinislam.retrofitjas.data.api
 
 import kz.abudinislam.retrofitjas.data.*
+import kz.abudinislam.retrofitjas.data.cast.CreditResponse
 import kz.abudinislam.retrofitjas.domain.model.AccountInfo
 import kz.abudinislam.retrofitjas.domain.model.LoginApprove
 import kz.abudinislam.retrofitjas.domain.model.Result
@@ -76,6 +77,14 @@ interface MoviesApi { // интерфейс для создания гет за�
         @Query("api_key") apiKey: String = API_KEY,
         @Query("session_id") session_id: String = SESSION_ID
     ): Response<AccountInfo>
+
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") key: String = API_KEY,
+        @Query("language") lang: String = LANGUAGE
+    ): Response<CreditResponse>
 
 
     companion object {

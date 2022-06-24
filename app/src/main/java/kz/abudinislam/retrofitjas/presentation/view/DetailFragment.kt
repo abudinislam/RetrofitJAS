@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kz.abudinislam.retrofitjas.R
 import kz.abudinislam.retrofitjas.databinding.FragmentDetailBinding
 import kz.abudinislam.retrofitjas.domain.model.Result
+import kz.abudinislam.retrofitjas.presentation.view.adapter.cast_adapter.CastAdapter
 import kz.abudinislam.retrofitjas.presentation.viewmodel.DetailViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
@@ -28,6 +29,8 @@ class DetailFragment : Fragment(), CoroutineScope {
     private lateinit var prefSettings: SharedPreferences
 
     private val viewModel by viewModel<DetailViewModel>()
+
+    private val adapter = CastAdapter()
 
     override val coroutineContext: CoroutineContext = Dispatchers.Main
 
@@ -52,8 +55,8 @@ class DetailFragment : Fragment(), CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
         getSessionId()
         // initViewModel()
-        getMovieDetails()
-
+        getMovieDetails(movieId)
+        observeActors()
         setOnClickFavorites()
         setLike()
     }
@@ -89,8 +92,9 @@ class DetailFragment : Fragment(), CoroutineScope {
     }
 
 
-    private fun getMovieDetails() {
+    private fun getMovieDetails(movieId: Int) {
         viewModel.getMovieDetails(args.result, sessionId)
+        viewModel.getCreditResponse(movieId)
         viewModel.loadingState.observe(viewLifecycleOwner) {
             when (it) {
                 is DetailViewModel.StateDetail.ShowLoading -> {
@@ -116,10 +120,25 @@ class DetailFragment : Fragment(), CoroutineScope {
             }
         }
 
+
     }
+
+    private fun observeActors(){
+        viewModel.actors.observe(viewLifecycleOwner){
+//            for(i in it){
+//                Log.d("ACTORS" , i.name)
+//            }
+            adapter.submitList(it)
+            binding.rvCast.adapter = adapter
+
+        }
+    }
+
 
     companion object {
 
+
+        private var movieId: Int = 0
         private const val KEY = "result"
         private const val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
         private var sessionId: String = ""

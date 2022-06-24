@@ -7,14 +7,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kz.abudinislam.retrofitjas.domain.model.Result
 import kz.abudinislam.retrofitjas.data.MoviesRepositoryImpl
+import kz.abudinislam.retrofitjas.data.cast.Cast
 import kz.abudinislam.retrofitjas.domain.usecase.AddOrDeleteFavoriteUseCase
+import kz.abudinislam.retrofitjas.domain.usecase.GetCreditResponseUseCase
 import kz.abudinislam.retrofitjas.domain.usecase.GetDetailUseCase
 import kz.abudinislam.retrofitjas.domain.usecase.PostMovieUseCase
 
 class DetailViewModel(
     private val getDetailUseCase: GetDetailUseCase,
     private val addOrDeleteFavoriteUseCase: AddOrDeleteFavoriteUseCase,
-    private val postMovieUseCase: PostMovieUseCase
+    private val postMovieUseCase: PostMovieUseCase,
+    private val getCreditResponseUseCase: GetCreditResponseUseCase
 ) : ViewModel() {
 
 
@@ -25,6 +28,10 @@ class DetailViewModel(
     private val _loadingState = MutableLiveData<StateDetail>()
     val loadingState: LiveData<StateDetail>
         get() = _loadingState
+
+    private val _actors = MutableLiveData<List<Cast>>()
+    val actors: LiveData<List<Cast>>
+        get() = _actors
 
 
 
@@ -47,6 +54,12 @@ class DetailViewModel(
             val movie = addOrDeleteFavoriteUseCase.invoke(movieId, sessionId)
             _liveDataDetail.value = movie
             postMovieUseCase.invoke(movieId, sessionId, movie)
+        }
+    }
+
+    fun getCreditResponse(movieId: Int) {
+        viewModelScope.launch {
+            _actors.value = getCreditResponseUseCase.invoke(movieId).body()?.cast
         }
     }
 

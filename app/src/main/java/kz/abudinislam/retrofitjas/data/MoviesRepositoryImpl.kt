@@ -7,10 +7,12 @@ import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kz.abudinislam.retrofitjas.data.api.MoviesApi
+import kz.abudinislam.retrofitjas.data.cast.CreditResponse
 import kz.abudinislam.retrofitjas.domain.model.AccountInfo
 import kz.abudinislam.retrofitjas.domain.model.LoginApprove
 import kz.abudinislam.retrofitjas.domain.model.Result
 import kz.abudinislam.retrofitjas.domain.repository.MovieRepository
+import retrofit2.Response
 
 class MoviesRepositoryImpl(
     private val api: MoviesApi,
@@ -159,6 +161,14 @@ class MoviesRepositoryImpl(
         }
 
         return session
+    }
+
+    override suspend fun getCreditResponse(movieId: Int): Response<CreditResponse> {
+        return withContext(Dispatchers.IO){
+
+            api.getCredits(movieId)
+
+        }
     }
 
     companion object {
